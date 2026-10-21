@@ -200,6 +200,7 @@ export const en = {
     setupTitle: 'Set it up',
     setupText: 'Install the RestModule, log in with the admin password it prints, and you are done.',
     setupButton: 'Web panel guide',
+    source: 'Source code on GitHub',
   },
   faqPage: {
     title: 'Frequently asked questions',

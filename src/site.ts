@@ -11,6 +11,7 @@ export const site = {
   email: 'contact@rexlcloud.de',
   panel: 'https://web.rexlcloud.de',
   github: 'https://github.com/rexlCloud',
+  panelSource: 'https://github.com/rexlCloud/WebPanel',
   repository: cloud.repository,
 };
 

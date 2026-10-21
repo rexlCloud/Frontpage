@@ -21,6 +21,7 @@ const image = (name: string) => screenshots[`../assets/screenshots/${name}.png`]
     <div class="mt-6 flex flex-wrap gap-3">
       <a href={site.panel} class="btn btn-primary" target="_blank" rel="noopener">{dict.panel.open} <Icon name="external" class="size-4" /></a>
       <a href={href(lang, '/docs/web-panel')} class="btn btn-glass"><Icon name="book" class="size-4" /> {page.setupButton}</a>
+      <a href={site.panelSource} class="btn btn-glass" target="_blank" rel="noopener"><Icon name="github" class="size-4" /> {page.source}</a>
     </div>
   </PageHeader>
 

@@ -202,6 +202,7 @@ export const de: typeof en = {
     setupTitle: 'Einrichten',
     setupText: 'RestModule installieren, mit dem ausgegebenen Admin-Passwort anmelden, fertig.',
     setupButton: 'Anleitung zum Webpanel',
+    source: 'Quellcode auf GitHub',
   },
   faqPage: {
     title: 'Häufige Fragen',
