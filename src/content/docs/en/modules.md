@@ -7,7 +7,7 @@ order: 1
 
 A **module** runs inside the master. It sees the whole network and can change it: start and stop servers, edit groups, message players, react to events and add console commands. The RestModule behind the web panel is a module itself.
 
-The full reference is the [Module API Javadoc](/api/module-api/). Every example on this page is in Java and Kotlin, and every build file for Gradle and Maven; the tabs remember your choice.
+The full reference is the [Module API Javadoc](/api/module-api/). A complete module to start from: [Example-cloud-module](https://github.com/rexlCloud/Example-cloud-module) (events, console commands, console questions, configuration). Every example on this page is in Java and Kotlin, and every build file for Gradle and Maven; the tabs remember your choice.
 
 ## Project setup
 

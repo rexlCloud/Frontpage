@@ -7,7 +7,7 @@ order: 1
 
 Ein **Modul** läuft im Master. Es sieht das ganze Netzwerk und kann es verändern: Server starten und stoppen, Gruppen bearbeiten, Spielern schreiben, auf Events reagieren und Konsolenbefehle hinzufügen. Das RestModule hinter dem Webpanel ist selbst ein Modul.
 
-Die vollständige Referenz ist die [Javadoc der Module-API](/api/module-api/) (auf Englisch). Jedes Beispiel auf dieser Seite gibt es in Java und Kotlin, jede Build-Datei für Gradle und Maven; die Tabs merken sich deine Wahl.
+Die vollständige Referenz ist die [Javadoc der Module-API](/api/module-api/) (auf Englisch). Ein komplettes Modul zum Loslegen: [Example-cloud-module](https://github.com/rexlCloud/Example-cloud-module) (Events, Konsolenbefehle, Fragen in der Konsole, Konfiguration). Jedes Beispiel auf dieser Seite gibt es in Java und Kotlin, jede Build-Datei für Gradle und Maven; die Tabs merken sich deine Wahl.
 
 ## Projekt einrichten
 

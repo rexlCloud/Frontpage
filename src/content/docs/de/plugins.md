@@ -9,6 +9,8 @@ Jeder Server und Proxy, den die Cloud startet, bekommt das Cloud-Plugin automati
 
 Referenz (auf Englisch): [Bridge-API](/api/bukkit-api/), [Proxy-API](/api/proxy-api/) und die gemeinsamen Klassen in der [Module-API](/api/module-api/) (`RexlCloudApi`, `Player`, `Server`, `MessageChannel`).
 
+Komplette Plugins zum Loslegen: [Example-paper-plugin](https://github.com/rexlCloud/Example-paper-plugin) und [Example-proxy-plugin](https://github.com/rexlCloud/Example-proxy-plugin) (eine Jar für Velocity und BungeeCord). Sie sprechen über einen Message-Channel miteinander.
+
 ## Abhängigkeiten
 
 ```kotlin tab="Gradle (Kotlin)"

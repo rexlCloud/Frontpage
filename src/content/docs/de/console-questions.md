@@ -17,7 +17,7 @@ How many servers? 3
 
 Während der Fragen zeigt die Konsole nur die aktuelle Frage und hält Log-Zeilen bis zum Schluss zurück. <kbd>Tab</kbd> bietet die möglichen Antworten an, eine Antwort, die die Frage nicht akzeptiert, stellt sie erneut, und <kbd>Strg</kbd>+<kbd>C</kbd> bricht ab.
 
-Referenz (auf Englisch): die Pakete `de.rexlcloud.core.console.animation` in der [Javadoc der Module-API](/api/module-api/). Diese Seite baut auf [Ein Modul schreiben](/docs/modules) auf.
+Referenz (auf Englisch): die Pakete `de.rexlcloud.core.console.animation` in der [Javadoc der Module-API](/api/module-api/). Diese Seite baut auf [Ein Modul schreiben](/docs/modules) auf. Das [Example-cloud-module](https://github.com/rexlCloud/Example-cloud-module) enthält einen kompletten Fragenablauf (`GroupWizard`).
 
 ## Fragen stellen
 

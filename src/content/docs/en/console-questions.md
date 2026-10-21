@@ -17,7 +17,7 @@ How many servers? 3
 
 While the questions run, the console shows only the current question and keeps log lines back until the end. <kbd>Tab</kbd> offers the possible answers, an answer the question does not accept asks it again, and <kbd>Ctrl</kbd>+<kbd>C</kbd> cancels.
 
-Reference: the `de.rexlcloud.core.console.animation` packages in the [Module API Javadoc](/api/module-api/). This page builds on [Writing a module](/docs/modules).
+Reference: the `de.rexlcloud.core.console.animation` packages in the [Module API Javadoc](/api/module-api/). This page builds on [Writing a module](/docs/modules). The [Example-cloud-module](https://github.com/rexlCloud/Example-cloud-module) has a complete question flow (`GroupWizard`).
 
 ## Asking questions
 

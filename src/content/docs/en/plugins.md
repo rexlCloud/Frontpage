@@ -9,6 +9,8 @@ Every server and proxy started by the cloud gets the cloud plugin automatically:
 
 Reference: [Bridge API](/api/bukkit-api/), [Proxy API](/api/proxy-api/), and the shared classes in the [Module API](/api/module-api/) (`RexlCloudApi`, `Player`, `Server`, `MessageChannel`).
 
+Complete plugins to start from: [Example-paper-plugin](https://github.com/rexlCloud/Example-paper-plugin) and [Example-proxy-plugin](https://github.com/rexlCloud/Example-proxy-plugin) (one jar for Velocity and BungeeCord). They talk to each other over a message channel.
+
 ## Dependencies
 
 ```kotlin tab="Gradle (Kotlin)"
