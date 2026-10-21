@@ -1,0 +1,26 @@
+{
+  "name": "rexlcloud-frontpage",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "fetch-cloud": "node scripts/fetch-cloud.mjs",
+    "dev": "node scripts/fetch-cloud.mjs && astro dev",
+    "build": "node scripts/fetch-cloud.mjs && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.3",
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.4.1",
+    "fflate": "^0.8.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

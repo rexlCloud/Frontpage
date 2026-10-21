@@ -1,0 +1,10 @@
+node_modules
+dist
+.astro
+.git
+.github
+design-concepts
+public/api
+src/generated
+*.md
+!src/content/**/*.md

@@ -1,0 +1,104 @@
+---
+import { Code } from 'astro:components';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { href, t, type Lang } from '../i18n';
+import { fill, formatDate } from '../lib/format';
+import { release, type Artifact } from '../site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const dict = t(lang);
+const page = dict.downloadPage;
+const version = release.version;
+
+const gradle = `repositories {
+    maven { url = "https://repo.rexlcloud.de/snapshots" }
+}
+
+dependencies {
+    // module-api, bukkit-api, proxy-api or minestom-api
+    compileOnly "de.rexlcloud:bukkit-api:${version}"
+}`;
+const maven = `<repository>
+    <id>rexlcloud</id>
+    <url>https://repo.rexlcloud.de/snapshots</url>
+</repository>
+
+<dependency>
+    <groupId>de.rexlcloud</groupId>
+    <artifactId>bukkit-api</artifactId>
+    <version>${version}</version>
+    <scope>provided</scope>
+</dependency>`;
+---
+<Base lang={lang} title={page.title} soft>
+  <PageHeader title={page.title} text={page.text}>
+    <div class="mt-6 inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 font-mono text-sm">
+      <span class="text-slate-400">{page.version}</span>
+      <span class="text-white">{version}</span>
+      {release.releasedAt && <span class="text-slate-500">· {formatDate(release.releasedAt, lang)}</span>}
+    </div>
+  </PageHeader>
+
+  <section class="mx-auto grid max-w-6xl gap-4 px-5 md:grid-cols-2">
+    {page.files.map((file) => (
+      <article class:list={['card flex flex-col p-6', { 'md:col-span-2 border-sky/30 bg-white/[0.07]': file.primary }]}>
+        <div class="flex items-start gap-4">
+          <div class="icon-tile shrink-0"><Icon name={file.primary ? 'rocket' : 'jar'} class="size-5" /></div>
+          <div class="min-w-0 flex-1">
+            <h2 class="text-lg font-bold text-white">{file.name}</h2>
+            <p class="mt-1 font-mono text-xs text-slate-500">{file.key}-{version}.jar</p>
+            <p class="mt-3 text-slate-400">{file.text}</p>
+          </div>
+        </div>
+        <div class="mt-5 flex flex-wrap gap-3 md:mt-auto md:pt-5">
+          <a href={release.jars[file.key as Artifact]} class:list={['btn', file.primary ? 'btn-primary' : 'btn-glass btn-sm']} download>
+            <Icon name="download" class="size-4" /> {fill(dict.download.button, { version })}
+          </a>
+          {file.primary && <a href={href(lang, '/docs/installation')} class="btn btn-glass">{dict.download.guide} <Icon name="arrow" class="size-4" /></a>}
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <section class="mx-auto grid max-w-6xl gap-4 px-5 pt-16 lg:grid-cols-[1fr_1.4fr]">
+    <div class="card min-w-0 p-6">
+      <h2 class="text-lg font-bold text-white">{page.requirementsTitle}</h2>
+      <ul class="mt-4 space-y-3">
+        {page.requirements.map((item) => (
+          <li class="flex gap-3 text-slate-300"><Icon name="check" class="mt-0.5 size-5 shrink-0 text-sky" />{item}</li>
+        ))}
+      </ul>
+    </div>
+    <div class="card min-w-0 p-6">
+      <h2 class="text-lg font-bold text-white">{page.developersTitle}</h2>
+      <p class="mt-2 text-slate-400">{page.developersText}</p>
+      <div class="mt-4 grid gap-4 xl:grid-cols-2">
+        <div class="min-w-0">
+          <div class="mb-1.5 font-mono text-xs text-slate-500">build.gradle</div>
+          <Code code={gradle} lang="groovy" theme="github-dark-default" class="snippet" />
+        </div>
+        <div class="min-w-0">
+          <div class="mb-1.5 font-mono text-xs text-slate-500">pom.xml</div>
+          <Code code={maven} lang="xml" theme="github-dark-default" class="snippet" />
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  :global(.snippet) {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(2 6 23 / 0.75) !important;
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+</style>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+  .wrap { display: grid; gap: 28px; font-family: var(--font-sans); }
+  .label { display: flex; align-items: baseline; gap: 10px; margin: 0 0 8px; }
+  .label b { font-size: 15px; color: var(--foreground); }
+  .label span { font-size: 13px; color: var(--muted-foreground); }
+  .tag { font: 600 11px var(--font-mono); padding: 2px 7px; border-radius: 99px; background: var(--accent-surface); color: var(--accent-surface-foreground); }
+  .mock { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+  .nav { display: flex; align-items: center; gap: 18px; padding: 14px 20px; font-size: 12px; }
+  .nav .logo { font-weight: 800; font-size: 14px; margin-right: auto; display: flex; align-items: center; gap: 7px; }
+  .hero { padding: 26px 24px 30px; }
+  .hero h1 { margin: 0 0 10px; line-height: 1.08; }
+  .hero p { margin: 0 0 18px; font-size: 13px; line-height: 1.55; max-width: 34rem; }
+  .btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { font-size: 12px; font-weight: 700; padding: 9px 15px; border-radius: 8px; }
+  .feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 24px 24px; }
+  .feat { padding: 12px; border-radius: 10px; font-size: 11px; line-height: 1.45; }
+  .feat b { display: block; font-size: 12px; margin-bottom: 4px; }
+  .ic { width: 22px; height: 22px; border-radius: 6px; margin-bottom: 8px; display: grid; place-items: center; font-size: 12px; }
+  @media (max-width: 560px) { .feats { grid-template-columns: 1fr; } .nav a { display: none; } }
+
+  /* A: Midnight Console */
+  .a { background: #0b1120; color: #cbd5e1; }
+  .a .logo { color: #fff; } .a .logo i { width: 18px; height: 18px; border-radius: 5px; background: linear-gradient(135deg,#22d3ee,#0891b2); }
+  .a .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; align-items: center; }
+  .a h1 { color: #fff; font-size: 30px; } .a h1 em { font-style: normal; color: #22d3ee; }
+  .a .b1 { background: #06b6d4; color: #04222b; } .a .b2 { border: 1px solid #334155; color: #e2e8f0; }
+  .a .term { background: #020617; border: 1px solid #1e293b; border-radius: 10px; font: 11px/1.7 var(--font-mono); padding: 12px; color: #94a3b8; }
+  .a .term .d { display: flex; gap: 5px; margin-bottom: 8px; } .a .term .d i { width: 8px; height: 8px; border-radius: 50%; background: #334155; }
+  .a .g { color: #4ade80; } .a .c { color: #22d3ee; }
+  .a .feat { background: #111a2e; border: 1px solid #1e293b; } .a .feat b { color: #f1f5f9; } .a .ic { background: #083344; color: #22d3ee; }
+  @media (max-width: 560px) { .a .hero { grid-template-columns: 1fr; } }
+
+  /* B: Aurora Glass */
+  .b { background: radial-gradient(120% 90% at 10% 0%, #4c1d95 0%, transparent 55%), radial-gradient(90% 80% at 100% 20%, #be185d 0%, transparent 50%), radial-gradient(80% 80% at 50% 120%, #1d4ed8 0%, transparent 60%), #0c0a1d; color: #e9e5ff; }
+  .b .nav { margin: 12px; border-radius: 12px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); }
+  .b .hero { text-align: center; padding-top: 20px; } .b .hero p { margin-inline: auto; color: #c4b5fd; }
+  .b h1 { font-size: 36px; color: #fff; letter-spacing: -.02em; }
+  .b h1 em { font-style: normal; background: linear-gradient(90deg,#f0abfc,#93c5fd); -webkit-background-clip: text; color: transparent; }
+  .b .btns { justify-content: center; } .b .b1 { background: #fff; color: #1e1b4b; } .b .b2 { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #fff; }
+  .b .pill { display: inline-block; font-size: 11px; padding: 4px 10px; border-radius: 99px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); margin-bottom: 14px; }
+  .b .feat { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.13); backdrop-filter: blur(8px); color: #ddd6fe; } .b .feat b { color: #fff; }
+  .b .ic { background: linear-gradient(135deg,#a855f7,#ec4899); color: #fff; }
+
+  /* C: Blueprint (light) */
+  .c { background-color: #f8fafc; background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px); background-size: 22px 22px; color: #334155; }
+  .c .nav { background: #fff; border-bottom: 1px solid #e2e8f0; } .c .logo { color: #0f172a; } .c .logo i { width: 18px; height: 18px; border: 2px solid #2563eb; border-radius: 4px; }
+  .c .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: center; }
+  .c h1 { font-size: 30px; color: #0f172a; letter-spacing: -.02em; } .c h1 em { font-style: normal; color: #2563eb; }
+  .c .b1 { background: #2563eb; color: #fff; } .c .b2 { background: #fff; border: 1px solid #cbd5e1; color: #0f172a; }
+  .c .diagram { background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px; font: 11px var(--font-mono); color: #475569; display: grid; gap: 8px; }
+  .c .node { border: 1.5px solid #2563eb; border-radius: 6px; padding: 6px 8px; text-align: center; color: #1e3a8a; background: #eff6ff; }
+  .c .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .c .node.w { border-color: #64748b; background: #f1f5f9; color: #334155; }
+  .c .line { text-align: center; color: #94a3b8; line-height: 1; }
+  .c .feat { background: #fff; border: 1px solid #e2e8f0; } .c .feat b { color: #0f172a; } .c .ic { background: #dbeafe; color: #2563eb; font-family: var(--font-mono); }
+  @media (max-width: 560px) { .c .hero { grid-template-columns: 1fr; } }
+
+  /* D: Voxel (Minecraft-flavoured) */
+  .d { background: linear-gradient(180deg, #13261a 0%, #0d1a12 100%); color: #c8e6c9; }
+  .d .nav { border-bottom: 3px solid #1f3d27; } .d .logo { color: #fff; font-family: var(--font-mono); letter-spacing: .04em; }
+  .d .logo i { width: 16px; height: 16px; background: #4ade80; box-shadow: inset -4px -4px 0 #16a34a, inset 4px 4px 0 #86efac; }
+  .d .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; align-items: center; }
+  .d h1 { font-family: var(--font-mono); font-size: 27px; color: #fff; text-transform: uppercase; letter-spacing: .02em; } .d h1 em { font-style: normal; color: #4ade80; }
+  .d .btn { border-radius: 0; } .d .b1 { background: #4ade80; color: #052e16; box-shadow: inset -3px -3px 0 #16a34a, inset 3px 3px 0 #bbf7d0; }
+  .d .b2 { background: #374151; color: #fff; box-shadow: inset -3px -3px 0 #1f2937, inset 3px 3px 0 #6b7280; }
+  .d .blocks { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; width: 100%; max-width: 190px; justify-self: center; }
+  .d .blocks i { aspect-ratio: 1; background: #3f6212; box-shadow: inset -4px -4px 0 rgba(0,0,0,.3), inset 4px 4px 0 rgba(255,255,255,.15); }
+  .d .blocks i.s { background: #78716c; } .d .blocks i.g { background: #16a34a; } .d .blocks i.e { background: transparent; box-shadow: none; } .d .blocks i.c { background: #22d3ee; }
+  .d .feat { background: #17301f; border: 2px solid #24452e; border-radius: 0; } .d .feat b { color: #fff; font-family: var(--font-mono); text-transform: uppercase; font-size: 11px; }
+  .d .ic { border-radius: 0; background: #4ade80; color: #052e16; font-weight: 800; }
+  @media (max-width: 560px) { .d .hero { grid-template-columns: 1fr; } }
+</style></head>
+<body><div class="wrap">
+
+<section>
+  <div class="label"><span class="tag">A</span><b>Midnight Console</b><span>dark slate + cyan, same look as the web panel, terminal in the hero</span></div>
+  <div class="mock a">
+    <div class="nav"><div class="logo"><i></i>rexlCloud</div><a>Features</a><a>Docs</a><a>API</a><a>Download</a></div>
+    <div class="hero">
+      <div>
+        <h1>Your Minecraft network, <em>on autopilot.</em></h1>
+        <p>One master, as many wrappers as you like. Servers and proxies start where there is room, templates sync in seconds.</p>
+        <div class="btns"><span class="btn b1">Get started →</span><span class="btn b2">Download 2.0.22</span></div>
+      </div>
+      <div class="term"><div class="d"><i></i><i></i><i></i></div>
+        $ java -jar launcher.jar<br><span class="g">✔</span> Master 2.0.22 started<br><span class="g">✔</span> Wrapper-1 connected (16 GB)<br><span class="c">↑</span> Lobby-1 online · Paper 26.3<br><span class="c">↑</span> Proxy-1 online · Velocity</div>
+    </div>
+    <div class="feats">
+      <div class="feat"><div class="ic">⇅</div><b>Auto scaling</b>Starts servers as players join.</div>
+      <div class="feat"><div class="ic">◫</div><b>Multi-root</b>One master, many wrappers.</div>
+      <div class="feat"><div class="ic">{}</div><b>Real-time API</b>Every command has an API method.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label"><span class="tag">B</span><b>Aurora Glass</b><span>bold gradients, frosted cards, centred marketing hero</span></div>
+  <div class="mock b">
+    <div class="nav"><div class="logo">☁ rexlCloud</div><a>Features</a><a>Docs</a><a>API</a><a>Download</a></div>
+    <div class="hero">
+      <span class="pill">✦ New in 2.0.22: Javadoc for every API</span>
+      <h1>The cloud system<br><em>your network deserves</em></h1>
+      <p>Paper, Spigot, Velocity, BungeeCord and your own Minestom jar, managed from one place, with a web panel on top.</p>
+      <div class="btns"><span class="btn b1">Get started</span><span class="btn b2">Download</span></div>
+    </div>
+    <div class="feats">
+      <div class="feat"><div class="ic">⚡</div><b>Auto scaling</b>Starts servers as players join.</div>
+      <div class="feat"><div class="ic">⧉</div><b>Templates</b>Changes reach every wrapper in seconds.</div>
+      <div class="feat"><div class="ic">◎</div><b>Web panel</b>Manage everything in the browser.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label"><span class="tag">C</span><b>Blueprint</b><span>light, technical, grid paper and an architecture diagram, docs-first</span></div>
+  <div class="mock c">
+    <div class="nav"><div class="logo"><i></i>rexlCloud</div><a>Features</a><a>Docs</a><a>API</a><a>Download</a></div>
+    <div class="hero">
+      <div>
+        <h1>Run a Minecraft network <em>like infrastructure.</em></h1>
+        <p>A master schedules servers onto wrappers by free memory and CPU. Encrypted with TLS 1.3, documented down to every API method.</p>
+        <div class="btns"><span class="btn b1">Installation guide</span><span class="btn b2">API reference</span></div>
+      </div>
+      <div class="diagram">
+        <div class="node">Master · templates · REST API</div>
+        <div class="line">│ TLS 1.3 │</div>
+        <div class="row"><div class="node w">Wrapper-1<br>Lobby-1 · Proxy-1</div><div class="node w">Wrapper-2<br>BedWars-1..4</div></div>
+      </div>
+    </div>
+    <div class="feats">
+      <div class="feat"><div class="ic">01</div><b>Scheduling</b>Most free memory wins.</div>
+      <div class="feat"><div class="ic">02</div><b>Templates</b>Synced within seconds.</div>
+      <div class="feat"><div class="ic">03</div><b>API</b>module-api, bukkit-api, proxy-api.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label"><span class="tag">D</span><b>Voxel</b><span>Minecraft-flavoured, pixel buttons, block art, playful but clean</span></div>
+  <div class="mock d">
+    <div class="nav"><div class="logo"><i></i>REXLCLOUD</div><a>Features</a><a>Docs</a><a>API</a><a>Download</a></div>
+    <div class="hero">
+      <div>
+        <h1>Build your network <em>block by block.</em></h1>
+        <p>Lobbies, minigames and proxies start themselves when players come. You just build the worlds.</p>
+        <div class="btns"><span class="btn b1">▶ Get started</span><span class="btn b2">Download</span></div>
+      </div>
+      <div class="blocks">
+        <i class="e"></i><i class="e"></i><i class="c"></i><i class="e"></i><i class="e"></i>
+        <i class="e"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="e"></i>
+        <i class="g"></i><i></i><i></i><i></i><i class="g"></i>
+        <i class="s"></i><i class="s"></i><i></i><i class="s"></i><i class="s"></i>
+      </div>
+    </div>
+    <div class="feats">
+      <div class="feat"><div class="ic">+</div><b>Auto scaling</b>Servers start as players join.</div>
+      <div class="feat"><div class="ic">#</div><b>Any jar</b>Paper, Spigot, Minestom.</div>
+      <div class="feat"><div class="ic">≡</div><b>Web panel</b>Everything in the browser.</div>
+    </div>
+  </div>
+</section>
+
+</div></body></html>

@@ -1,0 +1,15 @@
+# Overlay for running behind nginx-proxy with Let's Encrypt (external "proxy" network).
+# www.rexlcloud.de is redirected to rexlcloud.de by the site's own nginx.
+services:
+  frontpage:
+    ports: !reset []
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST:-rexlcloud.de,www.rexlcloud.de}
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST:-rexlcloud.de,www.rexlcloud.de}
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

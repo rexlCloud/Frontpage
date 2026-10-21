@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { href, t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const dict = t(lang);
+---
+<Base lang={lang} title={dict.notFound.title} soft>
+  <section class="mx-auto max-w-xl px-5 pt-28 text-center">
+    <p class="font-mono text-7xl font-extrabold text-gradient">404</p>
+    <h1 class="mt-4 text-3xl font-extrabold text-white">{dict.notFound.title}</h1>
+    <p class="mt-3 text-slate-400">{dict.notFound.text}</p>
+    <a href={href(lang, '/')} class="btn btn-primary mt-8"><Icon name="arrow" class="size-4 rotate-180" /> {dict.notFound.home}</a>
+  </section>
+</Base>

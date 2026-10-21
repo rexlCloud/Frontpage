@@ -1,0 +1,32 @@
+---
+import { href, t, type Lang } from '../i18n';
+import { slugOf, type Doc } from '../lib/docs';
+
+interface Props {
+  lang: Lang;
+  doc: Doc;
+  docs: Doc[];
+}
+const { lang, doc, docs } = Astro.props;
+const dict = t(lang);
+const groups = [...new Set(docs.map((d) => d.data.group))];
+---
+{groups.map((group) => (
+  <div class="mb-7 last:mb-0">
+    <h2 class="mb-2 font-mono text-xs uppercase tracking-widest text-slate-500">{dict.docs.groups[group]}</h2>
+    <ul class="space-y-0.5 border-l border-white/10">
+      {docs.filter((d) => d.data.group === group).map((d) => (
+        <li>
+          <a
+            href={href(lang, `/docs/${slugOf(d)}`)}
+            class:list={[
+              '-ml-px block border-l py-1.5 pl-4 text-sm transition-colors',
+              d === doc ? 'border-sky font-semibold text-white' : 'border-transparent text-slate-400 hover:border-white/30 hover:text-white',
+            ]}
+            aria-current={d === doc ? 'page' : undefined}
+          >{d.data.title}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+))}

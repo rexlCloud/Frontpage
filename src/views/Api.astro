@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { href, t, type Lang } from '../i18n';
+import { release } from '../site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const dict = t(lang);
+const page = dict.apiPage;
+const icons: Record<string, string> = {
+  'module-api': 'layers',
+  'bukkit-api': 'cube',
+  'proxy-api': 'nodes',
+  'minestom-api': 'jar',
+};
+---
+<Base lang={lang} title={page.title} soft>
+  <PageHeader eyebrow={dict.apiSection.eyebrow} title={page.title} text={page.text}>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href={href(lang, '/docs/modules')} class="btn btn-glass"><Icon name="book" class="size-4" /> {page.guide}</a>
+    </div>
+  </PageHeader>
+
+  <section class="mx-auto max-w-6xl px-5">
+    {release.apis.length === 0 ? (
+      <p class="card p-6 text-slate-400">{page.noDocs}</p>
+    ) : (
+      <div class="grid gap-4 md:grid-cols-2">
+        {release.apis.map((api) => {
+          const info = page.artifacts[api.artifact];
+          return (
+            <a href={`/api/${api.artifact}/`} class="card card-hover group flex flex-col p-6">
+              <div class="flex items-center gap-4">
+                <div class="icon-tile"><Icon name={icons[api.artifact] ?? 'code'} class="size-5" /></div>
+                <div>
+                  <h2 class="text-lg font-bold text-white">{info?.name ?? api.artifact}</h2>
+                  <p class="font-mono text-xs text-slate-500">de.rexlcloud:{api.artifact}:{api.version}</p>
+                </div>
+              </div>
+              <p class="mt-4 flex-1 text-slate-400">{info?.text}</p>
+              <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-sky">
+                {page.open} <Icon name="arrow" class="size-4 transition-transform group-hover:translate-x-1" />
+              </span>
+            </a>
+          );
+        })}
+      </div>
+    )}
+    <p class="mt-8 text-sm text-slate-500">
+      {page.repository}: <code class="code-inline">https://repo.rexlcloud.de/snapshots</code>
+    </p>
+  </section>
+</Base>

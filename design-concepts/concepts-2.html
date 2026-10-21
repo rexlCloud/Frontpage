@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+  .wrap { display: grid; gap: 28px; font-family: var(--font-sans); }
+  .label { display: flex; align-items: baseline; gap: 10px; margin: 0 0 8px; flex-wrap: wrap; }
+  .label b { font-size: 15px; color: var(--foreground); }
+  .label span { font-size: 13px; color: var(--muted-foreground); }
+  .tag { font: 600 11px var(--font-mono); padding: 2px 7px; border-radius: 99px; background: var(--accent-surface); color: var(--accent-surface-foreground); }
+  .mock { --t: #fff; --p: #cbd5e1; --line: rgba(255,255,255,.13); --glass: rgba(255,255,255,.07);
+          border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); color: var(--p); }
+  .nav { display: flex; align-items: center; gap: 18px; padding: 12px 18px; margin: 12px; border-radius: 12px; font-size: 12px;
+         background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(10px); }
+  .logo { font-weight: 800; font-size: 14px; margin-right: auto; display: flex; align-items: center; gap: 7px; color: var(--t); }
+  .logo i { width: 18px; height: 18px; border-radius: 5px; background: var(--grad); }
+  .nav .cta { padding: 6px 11px; border-radius: 7px; background: var(--grad); color: #fff; font-weight: 700; }
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 22px; align-items: center; padding: 18px 24px 28px; }
+  .pill { display: inline-block; font-size: 11px; padding: 4px 10px; border-radius: 99px; background: var(--glass); border: 1px solid var(--line); margin-bottom: 12px; color: var(--t); }
+  h1 { margin: 0 0 10px; line-height: 1.08; font-size: 31px; color: var(--t); letter-spacing: -.02em; }
+  h1 em { font-style: normal; background: var(--text-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { margin: 0 0 18px; font-size: 13px; line-height: 1.55; }
+  .btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { font-size: 12px; font-weight: 700; padding: 9px 15px; border-radius: 8px; }
+  .b1 { background: var(--grad); color: #fff; box-shadow: 0 6px 24px -6px var(--glow); }
+  .b2 { background: var(--glass); border: 1px solid var(--line); color: var(--t); }
+  .term { background: var(--term); border: 1px solid var(--line); border-radius: 12px; font: 11px/1.75 var(--font-mono); padding: 12px 14px; backdrop-filter: blur(10px);
+          box-shadow: 0 20px 50px -20px var(--glow); }
+  .term .d { display: flex; gap: 5px; margin-bottom: 8px; } .term .d i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .ok { color: #4ade80; } .up { color: var(--accent); }
+  .feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 24px 24px; }
+  .feat { padding: 12px; border-radius: 12px; font-size: 11px; line-height: 1.45; background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(8px); }
+  .feat b { display: block; font-size: 12px; margin-bottom: 4px; color: var(--t); }
+  .ic { width: 24px; height: 24px; border-radius: 7px; margin-bottom: 8px; display: grid; place-items: center; font-size: 12px; background: var(--grad); color: #fff; }
+  @media (max-width: 560px) { .hero, .feats { grid-template-columns: 1fr; } .nav a { display: none; } }
+
+  .v1 { --grad: linear-gradient(135deg,#a855f7,#ec4899); --text-grad: linear-gradient(90deg,#f0abfc,#93c5fd); --glow: rgba(217,70,239,.55); --accent: #f0abfc; --term: rgba(10,8,30,.6); --p: #d8cffd;
+        background: radial-gradient(110% 90% at 0% 0%, #4c1d95 0%, transparent 55%), radial-gradient(80% 80% at 100% 15%, #be185d 0%, transparent 50%), radial-gradient(80% 70% at 50% 120%, #1d4ed8 0%, transparent 60%), #0c0a1d; }
+  .v2 { --grad: linear-gradient(135deg,#06b6d4,#8b5cf6); --text-grad: linear-gradient(90deg,#67e8f9,#c4b5fd); --glow: rgba(56,189,248,.5); --accent: #67e8f9; --term: rgba(2,6,23,.65);
+        background: radial-gradient(100% 90% at 0% 0%, #0e7490 0%, transparent 52%), radial-gradient(90% 80% at 100% 10%, #6d28d9 0%, transparent 52%), radial-gradient(80% 70% at 60% 120%, #1e40af 0%, transparent 60%), #050b1a; }
+  .v3 { --grad: linear-gradient(135deg,#f97316,#ec4899); --text-grad: linear-gradient(90deg,#fdba74,#f9a8d4); --glow: rgba(249,115,22,.5); --accent: #fdba74; --term: rgba(24,6,18,.6); --p: #fbd5e5;
+        background: radial-gradient(100% 90% at 0% 0%, #9a3412 0%, transparent 52%), radial-gradient(90% 80% at 100% 10%, #9d174d 0%, transparent 52%), radial-gradient(80% 70% at 50% 120%, #5b21b6 0%, transparent 60%), #14060f; }
+  .v4 { --grad: linear-gradient(135deg,#10b981,#06b6d4 55%,#6366f1); --text-grad: linear-gradient(90deg,#6ee7b7,#67e8f9,#a5b4fc); --glow: rgba(16,185,129,.45); --accent: #6ee7b7; --term: rgba(2,12,14,.62);
+        background: radial-gradient(100% 90% at 0% 0%, #065f46 0%, transparent 52%), radial-gradient(90% 80% at 100% 10%, #3730a3 0%, transparent 52%), radial-gradient(80% 70% at 40% 120%, #0e7490 0%, transparent 60%), #03100f; }
+</style></head>
+<body><div class="wrap">
+<template id="body">
+  <div class="nav"><div class="logo"><i></i>rexlCloud</div><a>Features</a><a>Guide</a><a>API</a><span class="cta">Download</span></div>
+  <div class="hero">
+    <div>
+      <span class="pill">✦ 2.0.22: Javadoc for every API</span>
+      <h1>Your Minecraft network, <em>on autopilot.</em></h1>
+      <p>One master, as many wrappers as you like. Servers and proxies start where there is room, templates sync in seconds.</p>
+      <div class="btns"><span class="btn b1">Get started →</span><span class="btn b2">Download 2.0.22</span></div>
+    </div>
+    <div class="term"><div class="d"><i></i><i></i><i></i></div>
+      $ java -jar launcher.jar<br><span class="ok">✔</span> Master 2.0.22 started<br><span class="ok">✔</span> Wrapper-1 connected (16 GB)<br><span class="up">↑</span> Lobby-1 online · Paper 26.3<br><span class="up">↑</span> Proxy-1 online · Velocity</div>
+  </div>
+  <div class="feats">
+    <div class="feat"><div class="ic">⇅</div><b>Auto scaling</b>Starts servers as players join.</div>
+    <div class="feat"><div class="ic">⧉</div><b>Templates</b>Changes reach every wrapper in seconds.</div>
+    <div class="feat"><div class="ic">{}</div><b>Real-time API</b>Every command has an API method.</div>
+  </div>
+</template>
+<section><div class="label"><span class="tag">A+B 1</span><b>Aurora</b><span>B's purple, pink and blue exactly</span></div><div class="mock v1"></div></section>
+<section><div class="label"><span class="tag">A+B 2</span><b>Cyan Nebula</b><span>cyan to violet; keeps the panel's cyan so both fit together</span></div><div class="mock v2"></div></section>
+<section><div class="label"><span class="tag">A+B 3</span><b>Sunset</b><span>orange, pink and purple; warm and loud</span></div><div class="mock v3"></div></section>
+<section><div class="label"><span class="tag">A+B 4</span><b>Northern Lights</b><span>emerald, cyan and indigo; a nod to Minecraft green</span></div><div class="mock v4"></div></section>
+<script>
+  const t = document.getElementById('body').innerHTML;
+  document.querySelectorAll('.mock').forEach(m => m.innerHTML = t);
+</script>
+</div></body></html>

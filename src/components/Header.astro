@@ -1,0 +1,85 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { href, splitPath, t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const dict = t(lang);
+const { path } = splitPath(Astro.url.pathname);
+const links = [
+  { label: dict.nav.features, url: href(lang, '/#features') },
+  { label: dict.nav.guide, url: href(lang, '/docs/installation') },
+  { label: dict.nav.api, url: href(lang, '/api') },
+  { label: dict.nav.panel, url: href(lang, '/panel') },
+  { label: dict.nav.faq, url: href(lang, '/faq') },
+];
+// The guide link stays highlighted on every docs page
+const current = (url: string) => {
+  const target = splitPath(url.split('#')[0]).path;
+  return target !== '/' && (path === target || (target.startsWith('/docs') && path.startsWith('/docs')));
+};
+const other: Lang = lang === 'en' ? 'de' : 'en';
+---
+<header class="sticky top-0 z-40 px-3 pt-3 sm:px-5">
+  <nav class="glass mx-auto flex max-w-6xl items-center gap-2 rounded-2xl px-3 py-2.5 shadow-lg shadow-black/20 sm:px-4" aria-label="Main">
+    <a href={href(lang, '/')} class="mr-auto flex items-center gap-2.5 rounded-lg pr-2 text-[1.05rem] font-extrabold tracking-tight text-white">
+      <Logo size={30} />
+      rexlCloud
+    </a>
+    <ul class="hidden items-center gap-1 lg:flex">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.url}
+            class:list={[
+              'rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/8 hover:text-white',
+              current(link.url) ? 'text-white' : 'text-slate-300',
+            ]}
+          >{link.label}</a>
+        </li>
+      ))}
+    </ul>
+    <a href={href(other, path)} hreflang={other} lang={other} class="flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm text-slate-300 hover:bg-white/8 hover:text-white" title={dict.nav.language}>
+      <Icon name="globe" class="size-4" />
+      <span class="font-mono text-xs uppercase">{other}</span>
+    </a>
+    <a href={href(lang, '/download')} class="btn btn-primary btn-sm hidden sm:inline-flex">
+      <Icon name="download" class="size-4" />
+      {dict.nav.download}
+    </a>
+    <button type="button" class="rounded-lg p-2 text-slate-200 hover:bg-white/8 lg:hidden" aria-controls="mobile-menu" aria-expanded="false" data-menu-toggle>
+      <span class="sr-only">{dict.nav.menu}</span>
+      <Icon name="menu" class="size-6" />
+    </button>
+  </nav>
+  <div id="mobile-menu" class="glass mx-auto mt-2 hidden max-w-6xl rounded-2xl p-2 lg:hidden" data-menu>
+    <ul class="grid gap-1">
+      {links.map((link) => (
+        <li><a href={link.url} class="block rounded-lg px-3 py-2.5 text-slate-200 hover:bg-white/8">{link.label}</a></li>
+      ))}
+      <li class="sm:hidden">
+        <a href={href(lang, '/download')} class="btn btn-primary mt-1 w-full"><Icon name="download" class="size-4" />{dict.nav.download}</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-menu-toggle]')) {
+    const menu = document.querySelector<HTMLElement>('[data-menu]');
+    button.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      button.setAttribute('aria-expanded', String(open));
+      menu?.classList.toggle('hidden', !open);
+    });
+    menu?.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) {
+        menu.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+</script>

@@ -1,0 +1,128 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { href, t, type Lang } from '../i18n';
+import { site } from '../site';
+
+interface Props {
+  lang: Lang;
+  page: 'impressum' | 'datenschutz';
+}
+const { lang, page } = Astro.props;
+const dict = t(lang);
+const title = page === 'impressum' ? dict.footer.imprint : dict.footer.privacy;
+// TODO: replace every [PLATZHALTER: ...] with the real details before going live
+const placeholder = (text: string) => `[PLATZHALTER: ${text}]`;
+---
+<Base lang={lang} title={title} soft>
+  <PageHeader title={title}>
+    {lang === 'en' && (
+      <p class="mt-4 max-w-2xl text-slate-400">
+        This page is required by German law and is therefore written in German.
+        {' '}<a class="text-sky underline" href={href('de', `/${page}`)}>Deutsche Fassung</a>
+      </p>
+    )}
+  </PageHeader>
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="prose" lang="de">
+      {page === 'impressum' ? (
+        <>
+          <h2>Angaben gemäß § 5 DDG</h2>
+          <p>
+            {placeholder('Vor- und Nachname bzw. Firmenname')}<br />
+            {placeholder('Straße und Hausnummer')}<br />
+            {placeholder('PLZ und Ort')}<br />
+            Deutschland
+          </p>
+          <h2>Kontakt</h2>
+          <p>
+            E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a><br />
+            Telefon: {placeholder('Telefonnummer (optional, oder ein zweiter schneller Kontaktweg)')}
+          </p>
+          <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+          <p>
+            {placeholder('Vor- und Nachname')}<br />
+            {placeholder('Anschrift wie oben')}
+          </p>
+          <h2>Haftung für Inhalte</h2>
+          <p>
+            Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen
+            verantwortlich. Wir sind jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu
+            überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Bei
+            Bekanntwerden von Rechtsverletzungen entfernen wir diese Inhalte umgehend.
+          </p>
+          <h2>Haftung für Links</h2>
+          <p>
+            Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für
+            die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Bei
+            Bekanntwerden von Rechtsverletzungen entfernen wir derartige Links umgehend.
+          </p>
+          <h2>Verbraucherstreitbeilegung</h2>
+          <p>
+            Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer
+            Verbraucherschlichtungsstelle teilzunehmen.
+          </p>
+        </>
+      ) : (
+        <>
+          <h2>1. Verantwortlicher</h2>
+          <p>
+            Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br />
+            {placeholder('Vor- und Nachname bzw. Firmenname')}<br />
+            {placeholder('Anschrift')}<br />
+            E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
+          </p>
+          <h2>2. Kurz gesagt</h2>
+          <p>
+            Diese Website setzt keine Cookies, verwendet keine Analyse- oder Tracking-Werkzeuge und bindet keine Inhalte
+            von Drittanbietern ein. Schriftarten werden von unserem eigenen Server geladen.
+          </p>
+          <h2>3. Hosting und Server-Logdateien</h2>
+          <p>
+            Die Website wird auf einem Server von {placeholder('Hosting-Anbieter, z. B. Hetzner Online GmbH, Industriestr. 25, 91710 Gunzenhausen')}
+            betrieben. Beim Aufruf der Seiten speichert der Webserver automatisch Informationen, die Ihr Browser
+            übermittelt: IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite, übertragene Datenmenge,
+            Referrer-URL sowie Browser und Betriebssystem.
+          </p>
+          <p>
+            Diese Daten sind technisch erforderlich, um die Website auszuliefern und ihre Sicherheit zu gewährleisten
+            (z. B. zur Abwehr von Angriffen). Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes
+            Interesse liegt im sicheren und stabilen Betrieb der Website. Die Logdateien werden nach
+            {placeholder('Speicherdauer, z. B. 14 Tagen')} gelöscht. Mit dem Hosting-Anbieter besteht ein Vertrag zur
+            Auftragsverarbeitung nach Art. 28 DSGVO.
+          </p>
+          <h2>4. Downloads</h2>
+          <p>
+            Downloads und die API-Dokumentation werden von <code>repo.rexlcloud.de</code> ausgeliefert, das wir ebenfalls
+            selbst betreiben. Dabei werden dieselben Server-Logdaten wie unter Punkt 3 verarbeitet.
+          </p>
+          <h2>5. Kontakt per E-Mail</h2>
+          <p>
+            Wenn Sie uns per E-Mail kontaktieren, verarbeiten wir Ihre Angaben, um Ihre Anfrage zu beantworten
+            (Art. 6 Abs. 1 lit. b bzw. f DSGVO). Die Daten werden gelöscht, sobald sie dafür nicht mehr benötigt werden
+            und keine gesetzlichen Aufbewahrungspflichten bestehen.
+          </p>
+          <h2>6. Externe Links</h2>
+          <p>
+            Diese Website verlinkt auf Angebote Dritter, etwa Discord. Erst wenn Sie einem solchen Link folgen, werden
+            Daten an den jeweiligen Anbieter übertragen; dort gilt dessen Datenschutzerklärung.
+          </p>
+          <h2>7. Webpanel</h2>
+          <p>
+            Das Webpanel unter <code>web.rexlcloud.de</code> ist ein eigenständiges Angebot mit eigener
+            Datenverarbeitung (u. a. ein Sitzungs-Cookie nach der Anmeldung). {placeholder('Ggf. eigene Datenschutzhinweise für das Webpanel verlinken')}
+          </p>
+          <h2>8. Ihre Rechte</h2>
+          <p>
+            Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung
+            der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch gegen die Verarbeitung (Art. 21).
+            Wenden Sie sich dazu an die oben genannte E-Mail-Adresse. Außerdem können Sie sich bei einer
+            Datenschutz-Aufsichtsbehörde beschweren, zum Beispiel bei der Behörde Ihres Wohnorts oder
+            {placeholder('zuständige Landesbehörde am Sitz des Verantwortlichen')}.
+          </p>
+          <p><em>Stand: {placeholder('Datum')}</em></p>
+        </>
+      )}
+    </div>
+  </div>
+</Base>

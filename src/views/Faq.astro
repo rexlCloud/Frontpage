@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { t, type Lang } from '../i18n';
+import { site } from '../site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const dict = t(lang);
+const page = dict.faqPage;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: page.items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+<Base lang={lang} title={page.title} soft>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  <PageHeader title={page.title} text={page.text}>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href={site.discord} class="btn btn-glass" target="_blank" rel="noopener"><Icon name="discord" class="size-4" /> Discord</a>
+      <a href={`mailto:${site.email}`} class="btn btn-glass"><Icon name="mail" class="size-4" /> {site.email}</a>
+    </div>
+  </PageHeader>
+
+  <section class="mx-auto max-w-3xl space-y-3 px-5">
+    {page.items.map((item, index) => (
+      <details class="card group p-0" open={index === 0}>
+        <summary class="flex cursor-pointer list-none items-center gap-4 px-6 py-5 text-lg font-semibold text-white [&::-webkit-details-marker]:hidden">
+          <span class="flex-1">{item.q}</span>
+          <Icon name="chevron" class="size-5 shrink-0 text-sky transition-transform group-open:rotate-90" />
+        </summary>
+        <p class="px-6 pb-6 leading-relaxed text-slate-300">{item.a}</p>
+      </details>
+    ))}
+  </section>
+</Base>

@@ -1,0 +1,11 @@
+services:
+  frontpage:
+    build:
+      context: .
+      args:
+        CACHE_BUST: ${CACHE_BUST:-0}
+    image: rexlcloud-frontpage
+    container_name: rexlcloud-frontpage
+    restart: unless-stopped
+    ports:
+      - "8080:80"

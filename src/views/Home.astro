@@ -1,0 +1,286 @@
+---
+import { Image } from 'astro:assets';
+import { Code } from 'astro:components';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { href, t, type Lang } from '../i18n';
+import { fill, formatDate } from '../lib/format';
+import { release, site } from '../site';
+import dashboard from '../assets/screenshots/dashboard.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const dict = t(lang);
+const version = release.version;
+const v = { version };
+
+const apiExample = `// Any plugin on a cloud server or proxy
+var cloud = RexlCloudApi.getInstance();
+
+cloud.getPlayer("Notch").thenAccept(player ->
+        player.connect("BedWars-1"));
+
+cloud.getServerGroup("BedWars")
+        .thenCompose(group -> cloud.startServer(group, 2))
+        .thenAccept(servers -> log(servers.length + " started"));
+
+// Tell the lobbies what this server is doing
+cloud.getServer(cloud.getServerName())
+        .thenAccept(server -> server.setState("INGAME"));`;
+---
+<Base lang={lang}>
+  <!-- Hero -->
+  <section class="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 sm:pt-20 lg:grid-cols-[1.08fr_1fr]">
+    <div>
+      <a href={href(lang, '/api')} class="glass inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm text-white hover:bg-white/10">
+        <span class="text-sky">✦</span> {fill(dict.hero.badge, v)}
+        <Icon name="chevron" class="size-3.5 text-slate-400" />
+      </a>
+      <h1 class="mt-6 text-[2.6rem] font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl">
+        {dict.hero.titleStart}<br />
+        <span class="text-gradient">{dict.hero.titleAccent}</span>
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">{dict.hero.text}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={href(lang, '/docs/installation')} class="btn btn-primary text-base">
+          {dict.hero.start} <Icon name="arrow" class="size-4" />
+        </a>
+        <a href={href(lang, '/download')} class="btn btn-glass text-base">
+          <Icon name="download" class="size-4" /> {fill(dict.hero.download, v)}
+        </a>
+      </div>
+      <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-400">
+        {dict.hero.facts.map((fact) => (
+          <li class="flex items-center gap-2"><Icon name="check" class="size-4 text-sky" />{fact}</li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="terminal relative p-5 text-[0.82rem] leading-7 sm:text-sm" aria-hidden="true">
+      <div class="mb-4 flex items-center gap-2">
+        <span class="size-3 rounded-full bg-white/15"></span>
+        <span class="size-3 rounded-full bg-white/15"></span>
+        <span class="size-3 rounded-full bg-white/15"></span>
+        <span class="ml-auto font-sans text-xs text-slate-500">rexlCloud · master</span>
+      </div>
+      {dict.terminal.lines.map(([kind, line], index) => (
+        <div class="terminal-line flex gap-2 whitespace-nowrap" style={`animation-delay:${index * 0.35}s`}>
+          {kind === 'cmd' ? (
+            <span class="text-slate-200">{line}</span>
+          ) : (
+            <>
+              <span class={kind === 'ok' ? 'text-emerald-400' : 'text-sky'}>{kind === 'ok' ? '✔' : '↑'}</span>
+              <span class="text-slate-400">{fill(line, v)}</span>
+            </>
+          )}
+        </div>
+      ))}
+      <div class="terminal-line mt-1 flex items-center gap-2" style={`animation-delay:${dict.terminal.lines.length * 0.35}s`}>
+        <span class="text-slate-200">&gt;</span><span class="cursor h-4 w-2 bg-sky"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="mx-auto max-w-6xl px-5">
+    <dl class="glass grid grid-cols-2 gap-px overflow-hidden rounded-2xl md:grid-cols-4">
+      {dict.stats.map((stat) => (
+        <div class="bg-night/30 px-6 py-6">
+          <dt class="sr-only">{stat.label}</dt>
+          <dd class="text-3xl font-extrabold text-gradient">{stat.value}</dd>
+          <dd class="mt-1 text-sm text-slate-400">{stat.label}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="mx-auto max-w-6xl px-5 pt-28">
+    <SectionHeading eyebrow={dict.features.eyebrow} title={dict.features.title} text={dict.features.text} />
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {dict.features.items.map((feature) => (
+        <article class="card card-hover p-6">
+          <div class="icon-tile"><Icon name={feature.icon} class="size-5" /></div>
+          <h3 class="mt-5 text-lg font-bold text-white">{feature.title}</h3>
+          <p class="mt-2 leading-relaxed text-slate-400">{feature.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="mx-auto grid max-w-6xl items-center gap-12 px-5 pt-28 lg:grid-cols-2">
+    <div>
+      <SectionHeading eyebrow={dict.architecture.eyebrow} title={dict.architecture.title} text={dict.architecture.text} />
+      <ol class="mt-8 space-y-5">
+        {dict.architecture.steps.map((step, index) => (
+          <li class="flex gap-4">
+            <span class="grid size-8 shrink-0 place-items-center rounded-full border border-sky/40 font-mono text-sm text-sky">{index + 1}</span>
+            <div>
+              <h3 class="font-bold text-white">{step.title}</h3>
+              <p class="mt-1 text-slate-400">{step.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <div class="card relative p-6 font-mono text-sm" aria-hidden="true">
+      <div class="mx-auto max-w-xs rounded-xl bg-gradient p-px">
+        <div class="rounded-[11px] bg-night/90 px-4 py-3 text-center">
+          <div class="font-sans font-bold text-white">{dict.architecture.master}</div>
+          <div class="mt-0.5 text-xs text-slate-400">{dict.architecture.masterDetail}</div>
+        </div>
+      </div>
+      <div class="relative mx-auto h-14 max-w-md">
+        <svg class="absolute inset-0 h-full w-full" viewBox="0 0 400 56" preserveAspectRatio="none">
+          <path d="M200 0V20M200 20H70V56M200 20H330V56" fill="none" stroke="url(#arch)" stroke-width="2" stroke-dasharray="5 5" class="flow" />
+          <defs><linearGradient id="arch"><stop offset="0" stop-color="#22d3ee" /><stop offset="1" stop-color="#8b5cf6" /></linearGradient></defs>
+        </svg>
+        <span class="glass absolute left-1/2 top-[11px] -translate-x-1/2 rounded-full px-2 py-0.5 text-[0.65rem] text-sky">{dict.architecture.tls}</span>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        {[
+          { name: 'Wrapper-1', servers: ['Proxy-1', 'Lobby-1', 'Lobby-2'] },
+          { name: 'Wrapper-2', servers: ['BedWars-1', 'BedWars-2', 'SkyWars-1'] },
+        ].map((wrapper) => (
+          <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+            <div class="mb-2 flex items-center gap-2 font-sans text-sm font-semibold text-white">
+              <Icon name="cpu" class="size-4 text-sky" /> {wrapper.name}
+            </div>
+            <ul class="space-y-1.5">
+              {wrapper.servers.map((server) => (
+                <li class="flex items-center gap-2 rounded-md bg-white/[0.04] px-2 py-1 text-xs text-slate-300">
+                  <span class="size-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px] shadow-emerald-400"></span>{server}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Web panel -->
+  <section class="mx-auto max-w-6xl px-5 pt-28">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <SectionHeading eyebrow={dict.panel.eyebrow} title={dict.panel.title} text={dict.panel.text} />
+      <div class="flex flex-wrap gap-3">
+        <a href={href(lang, '/panel')} class="btn btn-glass">{dict.panel.more} <Icon name="arrow" class="size-4" /></a>
+        <a href={site.panel} class="btn btn-primary" target="_blank" rel="noopener">{dict.panel.open} <Icon name="external" class="size-4" /></a>
+      </div>
+    </div>
+    <div class="relative mt-10">
+      <div class="absolute inset-x-0 -inset-y-6 -z-10 rounded-[2rem] bg-gradient opacity-25 blur-3xl sm:-inset-x-6"></div>
+      <div class="glass overflow-hidden rounded-2xl p-1.5">
+        <Image src={dashboard} alt={dict.panelPage.shots[0].title} class="w-full rounded-xl" widths={[640, 1024, 1440]} sizes="(min-width: 1152px) 1120px, 100vw" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- API -->
+  <section class="mx-auto grid max-w-6xl items-center gap-12 px-5 pt-28 lg:grid-cols-[1fr_1.1fr]">
+    <div>
+      <SectionHeading eyebrow={dict.apiSection.eyebrow} title={dict.apiSection.title} text={dict.apiSection.text} />
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={href(lang, '/api')} class="btn btn-primary"><Icon name="book" class="size-4" /> {dict.apiSection.docs}</a>
+        <a href={href(lang, '/docs/modules')} class="btn btn-glass">{dict.apiSection.guide} <Icon name="arrow" class="size-4" /></a>
+      </div>
+      <ul class="mt-8 flex flex-wrap gap-2 font-mono text-xs">
+        {release.apis.map((api) => (
+          <li><a href={`/api/${api.artifact}/`} class="glass inline-block rounded-full px-3 py-1.5 text-slate-300 hover:text-white">{api.artifact}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div class="terminal overflow-hidden">
+      <div class="flex items-center gap-2 border-b border-white/10 px-4 py-2.5 font-sans text-xs text-slate-400">
+        <Icon name="code" class="size-4 text-sky" /> MyPlugin.java
+      </div>
+      <Code code={apiExample} lang="java" theme="github-dark-default" class="code-block" />
+    </div>
+  </section>
+
+  <!-- Download -->
+  <section id="download" class="mx-auto max-w-6xl px-5 pt-28">
+    <div class="glass relative overflow-hidden rounded-3xl p-8 sm:p-12">
+      <div class="absolute -right-24 -top-24 size-72 rounded-full bg-gradient opacity-30 blur-3xl"></div>
+      <div class="relative grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
+        <div>
+          <span class="eyebrow">{dict.download.eyebrow}</span>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{dict.download.title}</h2>
+          <p class="mt-4 text-lg text-slate-300">{dict.download.text}</p>
+          <pre class="mt-6 overflow-x-auto rounded-xl border border-white/10 bg-night/70 p-4 font-mono text-sm text-slate-300"><span class="text-slate-500"># {lang === 'de' ? 'Master' : 'master'}</span>
+java -jar launcher.jar --master
+<span class="text-slate-500"># {lang === 'de' ? 'Wrapper, auf jeder Maschine' : 'wrapper, on every machine'}</span>
+java -jar launcher.jar --wrapper</pre>
+        </div>
+        <div class="card bg-night/60 p-6">
+          <div class="flex items-center gap-3">
+            <div class="icon-tile"><Icon name="rocket" class="size-5" /></div>
+            <div>
+              <div class="font-bold text-white">{dict.download.launcher}</div>
+              <div class="font-mono text-xs text-slate-400">launcher-{version}.jar</div>
+            </div>
+          </div>
+          <p class="mt-4 text-sm text-slate-400">{dict.download.launcherText}</p>
+          <a href={release.jars.launcher} class="btn btn-primary mt-5 w-full" download>
+            <Icon name="download" class="size-4" /> {fill(dict.download.button, v)}
+          </a>
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+            <span>{dict.download.requirements}</span>
+            {release.releasedAt && <span>{fill(dict.download.released, { date: formatDate(release.releasedAt, lang) })}</span>}
+          </div>
+          <div class="mt-5 grid grid-cols-2 gap-2">
+            <a href={href(lang, '/docs/installation')} class="btn btn-glass btn-sm">{dict.download.guide}</a>
+            <a href={href(lang, '/download')} class="btn btn-glass btn-sm">{dict.download.all}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to action -->
+  <section class="mx-auto max-w-3xl px-5 pt-28 text-center">
+    <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{dict.cta.title}</h2>
+    <p class="mt-4 text-lg text-slate-300">{dict.cta.text}</p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href={href(lang, '/docs/installation')} class="btn btn-primary text-base">{dict.cta.button} <Icon name="arrow" class="size-4" /></a>
+      <a href={site.discord} class="btn btn-glass text-base" target="_blank" rel="noopener"><Icon name="discord" class="size-4" /> Discord</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .terminal-line {
+    opacity: 0;
+    animation: line-in 0.4s ease forwards;
+  }
+  .cursor {
+    animation: blink 1s steps(2) infinite;
+  }
+  .flow {
+    animation: flow 1.2s linear infinite;
+  }
+  @keyframes line-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  @keyframes flow {
+    to { stroke-dashoffset: -10; }
+  }
+  .terminal :global(.code-block) {
+    margin: 0;
+    padding: 1.25rem;
+    font-size: 0.8rem;
+    line-height: 1.6rem;
+    background: transparent !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-line { opacity: 1; }
+  }
+</style>

@@ -1,0 +1,7 @@
+---
+import DocPage from '../../../views/DocPage.astro';
+import { docPaths } from '../../../lib/docs';
+
+export const getStaticPaths = () => docPaths('de');
+---
+<DocPage lang="de" doc={Astro.props.doc} docs={Astro.props.docs} />
