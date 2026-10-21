@@ -2,7 +2,7 @@
 title: Plugins für Server und Proxys
 description: "Die Cloud aus Plugins für Paper, Spigot, Velocity und BungeeCord nutzen: Spieler, Server, Status und Message-Channels."
 group: develop
-order: 2
+order: 3
 ---
 
 Jeder Server und Proxy, den die Cloud startet, bekommt das Cloud-Plugin automatisch: die **Bridge** auf Paper und Spigot, das **Proxy-Plugin** auf Velocity und BungeeCord. Deine eigenen Plugins nutzen die Cloud darüber mit `RexlCloudApi`, das auf jeder Plattform gleich ist.

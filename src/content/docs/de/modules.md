@@ -225,6 +225,8 @@ class WelcomeCommands(private val api: ModuleApi) {
 }
 ```
 
+Befehle, die mehrere Antworten brauchen, können sie nacheinander abfragen, wie `group create`: siehe [Fragen in der Konsole](/docs/console-questions).
+
 ## Die ModuleApi
 
 `getModuleApi()` (Kotlin: `moduleApi`) kann alles, was Konsole und Webpanel können. Ein paar Beispiele:

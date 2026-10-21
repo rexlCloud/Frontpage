@@ -225,6 +225,8 @@ class WelcomeCommands(private val api: ModuleApi) {
 }
 ```
 
+Commands that need several answers can ask them one after another, like `group create`: see [Questions in the console](/docs/console-questions).
+
 ## The ModuleApi
 
 `getModuleApi()` (Kotlin: `moduleApi`) can do everything the console and the web panel can. A few examples:

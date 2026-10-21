@@ -2,7 +2,7 @@
 title: Minestom and custom jars
 description: "Run your own server.jar in a group and connect a Minestom server to the cloud with the MinestomBridge."
 group: develop
-order: 3
+order: 4
 ---
 
 A group does not have to run Paper or Spigot. With a **custom jar** it starts any `server.jar` you give it, for example a [Minestom](https://minestom.net) server. The **MinestomBridge** connects such a server to the cloud, so it appears like any other server and can use the full API.
