@@ -1,6 +1,6 @@
 ---
-import { Code } from 'astro:components';
 import Base from '../layouts/Base.astro';
+import CodeTabs from '../components/CodeTabs.astro';
 import Icon from '../components/Icon.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { href, t, type Lang } from '../i18n';
@@ -15,25 +15,38 @@ const dict = t(lang);
 const page = dict.downloadPage;
 const version = release.version;
 
-const gradle = `repositories {
-    maven { url = "https://repo.rexlcloud.de/snapshots" }
+const gradleKotlin = `repositories {
+    maven("https://repo.rexlcloud.de/snapshots")
 }
 
 dependencies {
     // module-api, bukkit-api, proxy-api or minestom-api
-    compileOnly "de.rexlcloud:bukkit-api:${version}"
+    compileOnly("de.rexlcloud:bukkit-api:${version}")
 }`;
-const maven = `<repository>
-    <id>rexlcloud</id>
-    <url>https://repo.rexlcloud.de/snapshots</url>
-</repository>
+const gradleGroovy = `repositories {
+    maven { url = 'https://repo.rexlcloud.de/snapshots' }
+}
 
-<dependency>
-    <groupId>de.rexlcloud</groupId>
-    <artifactId>bukkit-api</artifactId>
-    <version>${version}</version>
-    <scope>provided</scope>
-</dependency>`;
+dependencies {
+    // module-api, bukkit-api, proxy-api or minestom-api
+    compileOnly 'de.rexlcloud:bukkit-api:${version}'
+}`;
+const maven = `<repositories>
+    <repository>
+        <id>rexlcloud</id>
+        <url>https://repo.rexlcloud.de/snapshots</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <!-- module-api, bukkit-api, proxy-api or minestom-api -->
+    <dependency>
+        <groupId>de.rexlcloud</groupId>
+        <artifactId>bukkit-api</artifactId>
+        <version>${version}</version>
+        <scope>provided</scope>
+    </dependency>
+</dependencies>`;
 ---
 <Base lang={lang} title={page.title} soft>
   <PageHeader title={page.title} text={page.text}>
@@ -77,28 +90,11 @@ const maven = `<repository>
     <div class="card min-w-0 p-6">
       <h2 class="text-lg font-bold text-white">{page.developersTitle}</h2>
       <p class="mt-2 text-slate-400">{page.developersText}</p>
-      <div class="mt-4 grid gap-4 xl:grid-cols-2">
-        <div class="min-w-0">
-          <div class="mb-1.5 font-mono text-xs text-slate-500">build.gradle</div>
-          <Code code={gradle} lang="groovy" theme="github-dark-default" class="snippet" />
-        </div>
-        <div class="min-w-0">
-          <div class="mb-1.5 font-mono text-xs text-slate-500">pom.xml</div>
-          <Code code={maven} lang="xml" theme="github-dark-default" class="snippet" />
-        </div>
-      </div>
+      <CodeTabs class="mt-4" tabs={[
+        { label: 'Gradle (Kotlin)', code: gradleKotlin, lang: 'kotlin' },
+        { label: 'Gradle (Groovy)', code: gradleGroovy, lang: 'groovy' },
+        { label: 'Maven', code: maven, lang: 'xml' },
+      ]} />
     </div>
   </section>
 </Base>
-
-<style>
-  :global(.snippet) {
-    margin: 0;
-    padding: 0.9rem 1rem;
-    border-radius: 0.75rem;
-    border: 1px solid rgb(255 255 255 / 0.1);
-    background: rgb(2 6 23 / 0.75) !important;
-    font-size: 0.78rem;
-    line-height: 1.55;
-  }
-</style>

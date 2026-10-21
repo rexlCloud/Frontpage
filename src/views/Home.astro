@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
-import { Code } from 'astro:components';
 import Base from '../layouts/Base.astro';
+import CodeTabs from '../components/CodeTabs.astro';
 import Icon from '../components/Icon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { href, t, type Lang } from '../i18n';
@@ -17,7 +17,8 @@ const dict = t(lang);
 const version = release.version;
 const v = { version };
 
-const apiExample = `// Any plugin on a cloud server or proxy
+const apiExample = {
+  java: `// Any plugin on a cloud server or proxy
 var cloud = RexlCloudApi.getInstance();
 
 cloud.getPlayer("Notch").thenAccept(player ->
@@ -29,7 +30,22 @@ cloud.getServerGroup("BedWars")
 
 // Tell the lobbies what this server is doing
 cloud.getServer(cloud.getServerName())
-        .thenAccept(server -> server.setState("INGAME"));`;
+        .thenAccept(server -> server.setState("INGAME"));`,
+  kotlin: `// Any plugin on a cloud server or proxy
+val cloud = RexlCloudApi.getInstance()
+
+cloud.getPlayer("Notch").thenAccept { player ->
+    player.connect("BedWars-1")
+}
+
+cloud.getServerGroup("BedWars")
+    .thenCompose { group -> cloud.startServer(group, 2) }
+    .thenAccept { servers -> log("\${servers.size} started") }
+
+// Tell the lobbies what this server is doing
+cloud.getServer(cloud.serverName)
+    .thenAccept { server -> server.setState("INGAME") }`,
+};
 ---
 <Base lang={lang}>
   <!-- Hero -->
@@ -194,12 +210,10 @@ cloud.getServer(cloud.getServerName())
         ))}
       </ul>
     </div>
-    <div class="terminal overflow-hidden">
-      <div class="flex items-center gap-2 border-b border-white/10 px-4 py-2.5 font-sans text-xs text-slate-400">
-        <Icon name="code" class="size-4 text-sky" /> MyPlugin.java
-      </div>
-      <Code code={apiExample} lang="java" theme="github-dark-default" class="code-block" />
-    </div>
+    <CodeTabs class="api-example" tabs={[
+      { label: 'Java', code: apiExample.java, lang: 'java' },
+      { label: 'Kotlin', code: apiExample.kotlin, lang: 'kotlin' },
+    ]} />
   </section>
 
   <!-- Download -->
@@ -273,8 +287,10 @@ java -jar launcher.jar --wrapper</pre>
   @keyframes flow {
     to { stroke-dashoffset: -10; }
   }
-  .terminal :global(.code-block) {
-    margin: 0;
+  :global(.api-example) {
+    box-shadow: 0 30px 80px -30px rgb(56 189 248 / 0.55);
+  }
+  :global(.api-example pre) {
     padding: 1.25rem;
     font-size: 0.8rem;
     line-height: 1.6rem;

@@ -1,0 +1,83 @@
+---
+// Turns every .code-tabs box (from the guides' Markdown or CodeTabs.astro) into tabs. A choice applies to all boxes
+// with that tab on every page and is remembered, e.g. Kotlin and Maven once picked stay picked.
+---
+<script>
+  const STORAGE = 'rexlcloud-code-tabs';
+  /** Tabs that replace each other everywhere: picking Kotlin in one box picks it in all. */
+  const FAMILIES: Record<string, string> = {
+    Java: 'language',
+    Kotlin: 'language',
+    'Gradle (Kotlin)': 'build',
+    'Gradle (Groovy)': 'build',
+    Maven: 'build',
+  };
+
+  function load(): Record<string, string> {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE) ?? '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  const choices = load();
+  const family = (label: string) => FAMILIES[label] ?? label;
+
+  function show(box: HTMLElement, label: string) {
+    for (const panel of box.querySelectorAll<HTMLElement>(':scope > .code-tab')) {
+      panel.hidden = panel.dataset.tab !== label;
+    }
+    for (const button of box.querySelectorAll<HTMLButtonElement>(':scope > .code-tabs-bar > button')) {
+      const active = button.dataset.tab === label;
+      button.setAttribute('aria-selected', String(active));
+      button.tabIndex = active ? 0 : -1;
+    }
+  }
+
+  function choose(label: string) {
+    choices[family(label)] = label;
+    try {
+      localStorage.setItem(STORAGE, JSON.stringify(choices));
+    } catch {
+      // Private mode: the choice holds for this page
+    }
+    for (const box of document.querySelectorAll<HTMLElement>('.code-tabs')) {
+      if (box.querySelector(`:scope > .code-tab[data-tab="${CSS.escape(label)}"]`)) {
+        show(box, label);
+      }
+    }
+  }
+
+  for (const box of document.querySelectorAll<HTMLElement>('.code-tabs')) {
+    const panels = [...box.querySelectorAll<HTMLElement>(':scope > .code-tab')];
+    const labels = panels.map((panel) => panel.dataset.tab ?? '');
+    const bar = document.createElement('div');
+    bar.className = 'code-tabs-bar';
+    bar.setAttribute('role', 'tablist');
+    for (const label of labels) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = label;
+      button.dataset.tab = label;
+      button.setAttribute('role', 'tab');
+      button.addEventListener('click', () => choose(label));
+      button.addEventListener('keydown', (event) => {
+        const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+        if (step) {
+          const next = labels[(labels.indexOf(label) + step + labels.length) % labels.length];
+          choose(next);
+          bar.querySelector<HTMLButtonElement>(`button[data-tab="${CSS.escape(next)}"]`)?.focus();
+        }
+      });
+      bar.append(button);
+    }
+    box.prepend(bar);
+    for (const panel of panels) {
+      panel.setAttribute('role', 'tabpanel');
+    }
+    const remembered = labels.find((label) => choices[family(label)] === label);
+    show(box, remembered ?? labels[0]);
+    box.classList.add('code-tabs-ready');
+  }
+</script>

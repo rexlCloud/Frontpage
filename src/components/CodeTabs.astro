@@ -1,0 +1,22 @@
+---
+import { Code } from 'astro:components';
+
+interface Tab {
+  /** Shared with the guides, e.g. "Java", "Kotlin", "Gradle (Kotlin)", "Gradle (Groovy)", "Maven" */
+  label: string;
+  code: string;
+  lang: string;
+}
+interface Props {
+  tabs: Tab[];
+  class?: string;
+}
+const { tabs, class: className } = Astro.props;
+---
+<div class:list={['code-tabs', className]}>
+  {tabs.map((tab) => (
+    <div class="code-tab" data-tab={tab.label}>
+      <Code code={tab.code} lang={tab.lang} theme="github-dark-default" />
+    </div>
+  ))}
+</div>

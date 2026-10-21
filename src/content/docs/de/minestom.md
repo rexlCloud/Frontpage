@@ -25,7 +25,19 @@ Der Wrapper startet sie mit `java -jar server.jar` und dem Speicher und den Java
 
 Füge sie deinem Minestom-Server hinzu, in derselben Version wie die Cloud:
 
-```groovy
+```kotlin tab="Gradle (Kotlin)"
+repositories {
+    mavenCentral()
+    maven("https://repo.rexlcloud.de/snapshots")
+}
+
+dependencies {
+    implementation("net.minestom:minestom:2026.10.07-26.2")
+    implementation("de.rexlcloud:minestom-api:{version}")
+}
+```
+
+```groovy tab="Gradle (Groovy)"
 repositories {
     mavenCentral()
     maven { url = 'https://repo.rexlcloud.de/snapshots' }
@@ -37,9 +49,31 @@ dependencies {
 }
 ```
 
-Baue eine Fat-Jar (z. B. mit dem Shadow-Plugin), denn der Wrapper startet sie mit `java -jar`.
+```xml tab="Maven"
+<repositories>
+    <repository>
+        <id>rexlcloud</id>
+        <url>https://repo.rexlcloud.de/snapshots</url>
+    </repository>
+</repositories>
 
-```java
+<dependencies>
+    <dependency>
+        <groupId>net.minestom</groupId>
+        <artifactId>minestom</artifactId>
+        <version>2026.10.07-26.2</version>
+    </dependency>
+    <dependency>
+        <groupId>de.rexlcloud</groupId>
+        <artifactId>minestom-api</artifactId>
+        <version>{version}</version>
+    </dependency>
+</dependencies>
+```
+
+Baue eine Fat-Jar (z. B. mit dem Shadow-Plugin), denn der Wrapper startet sie mit `java -jar`. In Kotlin heißt die Hauptklasse einer `fun main` in `Main.kt` `MainKt`.
+
+```java tab="Java"
 import de.rexlcloud.bridge.RexlCloudBridge;
 import net.minestom.server.MinecraftServer;
 
@@ -56,6 +90,23 @@ public final class Main {
         cloud.initialize();
         server.start("0.0.0.0", cloud.getPort());
     }
+}
+```
+
+```kotlin tab="Kotlin"
+import de.rexlcloud.bridge.RexlCloudBridge
+import net.minestom.server.MinecraftServer
+
+fun main() {
+    val cloud = RexlCloudBridge.getInstance()
+    // Velocity-/BungeeCord-Forwarding wie bei den Proxys
+    val server = MinecraftServer.init(cloud.auth)
+
+    // ... Instanzen anlegen, Events registrieren ...
+
+    // Verbindet sich mit dem Wrapper; ab jetzt ist die Cloud-API nutzbar
+    cloud.initialize()
+    server.start("0.0.0.0", cloud.port)
 }
 ```
 
