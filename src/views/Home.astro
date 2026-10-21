@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import CodeTabs from '../components/CodeTabs.astro';
+import ExampleProjects from '../components/ExampleProjects.astro';
 import Icon from '../components/Icon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import { href, t, type Lang } from '../i18n';
@@ -203,6 +204,7 @@ cloud.getServer(cloud.serverName)
       <div class="mt-8 flex flex-wrap gap-3">
         <a href={href(lang, '/api')} class="btn btn-primary"><Icon name="book" class="size-4" /> {dict.apiSection.docs}</a>
         <a href={href(lang, '/docs/modules')} class="btn btn-glass">{dict.apiSection.guide} <Icon name="arrow" class="size-4" /></a>
+        <a href="#examples" class="btn btn-glass"><Icon name="github" class="size-4" /> {dict.apiSection.examples}</a>
       </div>
       <ul class="mt-8 flex flex-wrap gap-2 font-mono text-xs">
         {release.apis.map((api) => (
@@ -215,6 +217,8 @@ cloud.getServer(cloud.serverName)
       { label: 'Kotlin', code: apiExample.kotlin, lang: 'kotlin' },
     ]} />
   </section>
+
+  <ExampleProjects lang={lang} />
 
   <!-- Download -->
   <section id="download" class="mx-auto max-w-6xl px-5 pt-28">

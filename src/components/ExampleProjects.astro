@@ -1,0 +1,36 @@
+---
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { t, type Lang } from '../i18n';
+import { examples, site } from '../site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const dict = t(lang).examples;
+---
+<section id="examples" class="mx-auto max-w-6xl px-5 pt-28">
+  <div class="flex flex-wrap items-end justify-between gap-6">
+    <SectionHeading eyebrow={dict.eyebrow} title={dict.title} text={dict.text} />
+    <a href={site.github} class="btn btn-glass" target="_blank" rel="noopener">
+      <Icon name="github" class="size-4" /> {dict.all}
+    </a>
+  </div>
+  <div class="mt-10 grid gap-4 md:grid-cols-3">
+    {examples.map((example) => {
+      const item = dict.items[example.key];
+      return (
+        <a href={`${site.github}/${example.repo}`} class="card card-hover group flex flex-col p-6" target="_blank" rel="noopener">
+          <div class="icon-tile"><Icon name={example.icon} class="size-5" /></div>
+          <h3 class="mt-5 text-lg font-bold text-white">{item.title}</h3>
+          <p class="mt-1 font-mono text-xs text-slate-500">rexlCloud/{example.repo}</p>
+          <p class="mt-3 flex-1 leading-relaxed text-slate-400">{item.text}</p>
+          <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-sky">
+            {dict.open} <Icon name="external" class="size-4 transition-transform group-hover:translate-x-0.5" />
+          </span>
+        </a>
+      );
+    })}
+  </div>
+</section>

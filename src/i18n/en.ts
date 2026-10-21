@@ -119,6 +119,19 @@ export const en = {
     text: 'Write modules that run inside the master, plugins for Paper, Spigot, Velocity and BungeeCord, or connect your own Minestom server. Every API is published with full Javadoc.',
     docs: 'Browse the API docs',
     guide: 'Read the developer guide',
+    examples: 'Example projects',
+  },
+  examples: {
+    eyebrow: 'Example projects',
+    title: 'Start from working code',
+    text: 'Three small projects on GitHub that use the API the way you would: copy them, build them with ./gradlew build and change what you need. MIT licensed.',
+    all: 'All projects on GitHub',
+    open: 'View on GitHub',
+    items: {
+      paper: { title: 'Paper plugin', text: 'Moves players between servers, starts servers when all are full, stores coins in the cloud, sets server states and sends announcements to the proxies.' },
+      proxy: { title: 'Proxy plugin', text: 'One jar for Velocity and BungeeCord: lists the network, finds and moves players across all proxies and broadcasts the announcements of the Paper plugin.' },
+      module: { title: 'Cloud module', text: 'Runs inside the master: cloud events, console commands, a step-by-step console question flow that creates groups, and a configuration file.' },
+    } as Record<string, { title: string; text: string }>,
   },
   download: {
     eyebrow: 'Download',

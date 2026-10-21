@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import PageHeader from '../components/PageHeader.astro';
+import ExampleProjects from '../components/ExampleProjects.astro';
 import { href, t, type Lang } from '../i18n';
 import { release } from '../site';
 
@@ -22,6 +23,7 @@ const icons: Record<string, string> = {
   <PageHeader eyebrow={dict.apiSection.eyebrow} title={page.title} text={page.text}>
     <div class="mt-6 flex flex-wrap gap-3">
       <a href={href(lang, '/docs/modules')} class="btn btn-glass"><Icon name="book" class="size-4" /> {page.guide}</a>
+      <a href="#examples" class="btn btn-glass"><Icon name="github" class="size-4" /> {dict.apiSection.examples}</a>
     </div>
   </PageHeader>
 
@@ -54,4 +56,6 @@ const icons: Record<string, string> = {
       {page.repository}: <code class="code-inline">https://repo.rexlcloud.de/snapshots</code>
     </p>
   </section>
+
+  <ExampleProjects lang={lang} />
 </Base>
