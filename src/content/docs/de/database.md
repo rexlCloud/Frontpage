@@ -5,7 +5,7 @@ group: operate
 order: 3
 ---
 
-Der Master speichert Spieler, ihre Daten und die Statistiken des Netzwerks in einer Datenbank. Sie wird in `config/database.json` eingestellt.
+Der Master speichert Spieler, ihre Daten und die Statistiken des Netzwerks in einer Datenbank. Die [Einrichtung beim ersten Start](/docs/installation) fragt, welche es sein soll, und richtet sie in der Konsole ein; danach wird sie in `config/database.json` eingestellt.
 
 ## Eingebaute H2-Datenbank (Standard)
 
@@ -52,7 +52,7 @@ Dann `config/database.json`:
 }
 ```
 
-Der Master legt seine Tabellen beim nächsten Start an. MySQL sicherst du mit `mysqldump` oder den Backups deines Hosters; `database backup` funktioniert nur für H2.
+Für MariaDB kannst du `"type": "mariadb"` schreiben; das funktioniert genauso. Der Master legt seine Tabellen beim nächsten Start an. MySQL sicherst du mit `mysqldump` oder den Backups deines Hosters; `database backup` funktioniert nur für H2.
 
 ## In eine andere Datenbank umziehen
 

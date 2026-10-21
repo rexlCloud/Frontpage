@@ -42,7 +42,22 @@ cd ~/rexlcloud/master
 java -Xms256M -Xmx1G -jar launcher.jar --master
 ```
 
-Without `--master` the launcher asks whether to start the master or a wrapper. On the first start it downloads the master and creates:
+Without `--master` the launcher asks whether to start the master or a wrapper. On the first start it downloads the master, which then asks a few questions. Press <kbd>Enter</kbd> for the suggested answer in brackets, <kbd>Tab</kbd> shows the choices:
+
+```text
+Port the wrappers connect to [1234]:
+Which proxy software will your network use? (velocity, bungeecord) [velocity]:
+Which database should the cloud use? (h2, mysql, mariadb) [h2]:
+Install the RestModule? (yes, no) [yes]:
+```
+
+- **Proxy software**: Velocity is recommended. BungeeCord switches the cloud to legacy forwarding (see [Your first network](/docs/first-network#player-forwarding)).
+- **Database**: `h2` is built in and needs nothing else. For `mysql` or `mariadb` the master asks for host, port, database, user and password, tests the connection right away and creates the database if the user may. If it fails, try again, change the settings or fall back to H2. See [Database](/docs/database).
+- **Modules**: the RestModule is the REST API for the [web panel](/docs/web-panel). Install it later with `modules install RestModule` if you skip it now.
+
+<kbd>Ctrl</kbd>+<kbd>C</kbd> cancels without saving anything; the questions come again on the next start. Everything can be changed later in `config/`.
+
+The master then creates:
 
 | Folder | Content |
 | --- | --- |
@@ -53,7 +68,7 @@ Without `--master` the launcher asks whether to start the master or a wrapper. O
 
 The console shows the **TLS fingerprint** of the master (`TLS fingerprint of the master: ...`). Keep it at hand for step 4.
 
-The master listens for wrappers on port **1234** (`port` in `config/master.json`). Only your wrappers need to reach it; block it for everyone else.
+The master listens for wrappers on the port from the setup, **1234** by default (`port` in `config/master.json`). Only your wrappers need to reach it; block it for everyone else.
 
 ## 3. Start a wrapper
 

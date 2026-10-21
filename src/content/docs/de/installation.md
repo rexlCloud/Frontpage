@@ -42,7 +42,22 @@ cd ~/rexlcloud/master
 java -Xms256M -Xmx1G -jar launcher.jar --master
 ```
 
-Ohne `--master` fragt der Launcher, ob Master oder Wrapper starten soll. Beim ersten Start lädt er den Master herunter und legt an:
+Ohne `--master` fragt der Launcher, ob Master oder Wrapper starten soll. Beim ersten Start lädt er den Master herunter, der dann ein paar Fragen stellt. <kbd>Enter</kbd> übernimmt den Vorschlag in Klammern, <kbd>Tab</kbd> zeigt die Auswahl:
+
+```text
+Port the wrappers connect to [1234]:
+Which proxy software will your network use? (velocity, bungeecord) [velocity]:
+Which database should the cloud use? (h2, mysql, mariadb) [h2]:
+Install the RestModule? (yes, no) [yes]:
+```
+
+- **Proxy-Software**: Empfohlen ist Velocity. BungeeCord stellt die Cloud auf Legacy Forwarding um (siehe [Dein erstes Netzwerk](/docs/first-network#spieler-forwarding)).
+- **Datenbank**: `h2` ist eingebaut und braucht nichts weiter. Bei `mysql` oder `mariadb` fragt der Master Host, Port, Datenbank, Benutzer und Passwort ab, testet die Verbindung sofort und legt die Datenbank an, wenn der Benutzer das darf. Klappt es nicht, kannst du es erneut versuchen, die Angaben ändern oder H2 nehmen. Siehe [Datenbank](/docs/database).
+- **Module**: Das RestModule ist die REST-API für das [Webpanel](/docs/web-panel). Überspringst du es jetzt, installierst du es später mit `modules install RestModule`.
+
+<kbd>Strg</kbd>+<kbd>C</kbd> bricht ab, ohne etwas zu speichern; beim nächsten Start kommen die Fragen erneut. Alles lässt sich später in `config/` ändern.
+
+Danach legt der Master an:
 
 | Ordner | Inhalt |
 | --- | --- |
@@ -53,7 +68,7 @@ Ohne `--master` fragt der Launcher, ob Master oder Wrapper starten soll. Beim er
 
 Die Konsole zeigt den **TLS-Fingerprint** des Masters (`TLS fingerprint of the master: ...`). Halte ihn für Schritt 4 bereit.
 
-Der Master wartet auf Port **1234** auf Wrapper (`port` in `config/master.json`). Nur deine Wrapper müssen ihn erreichen; für alle anderen sperren.
+Der Master wartet auf dem Port aus der Einrichtung auf Wrapper, standardmäßig **1234** (`port` in `config/master.json`). Nur deine Wrapper müssen ihn erreichen; für alle anderen sperren.
 
 ## 3. Wrapper starten
 

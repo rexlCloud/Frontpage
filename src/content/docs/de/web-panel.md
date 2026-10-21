@@ -9,17 +9,16 @@ Das Webpanel verwaltet dein Netzwerk im Browser: Server mit Live-Konsole, Gruppe
 
 ## 1. RestModule installieren
 
-Lade es in den Ordner `modules/` des Masters:
-
-```bash
-cd ~/master/modules   # der Ordner des Masters
-curl -L -O https://repo.rexlcloud.de/downloads/de/rexlcloud/restmodule/{version}/restmodule-{version}.jar
-```
-
-Starte den Master neu oder lade es ohne Neustart:
+Hast du in der [Einrichtung beim ersten Start](/docs/installation) „Install the RestModule?“ mit **yes** beantwortet, ist es schon installiert. Sonst gibst du in der Konsole des Masters ein; das lädt das RestModule in der Version des Masters herunter und lädt es sofort:
 
 ```text
-modules load restmodule-{version}.jar
+modules install RestModule
+```
+
+`modules available` zeigt alle offiziellen Module und ob sie installiert sind. Du kannst die Jar auch selbst in den Ordner `modules/` des Masters laden und mit `modules load <datei>` laden:
+
+```bash
+curl -L -o ~/master/modules/RestModule-{version}.jar https://repo.rexlcloud.de/downloads/de/rexlcloud/restmodule/{version}/restmodule-{version}.jar
 ```
 
 Ab jetzt hält der Master das RestModule bei jedem Start selbst aktuell. Offizielle Module, die nicht installiert sind, werden nie hinzugefügt.

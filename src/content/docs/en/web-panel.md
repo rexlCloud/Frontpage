@@ -9,17 +9,16 @@ The web panel manages your network in the browser: servers with their live conso
 
 ## 1. Install the RestModule
 
-Download it into the master's `modules/` folder:
-
-```bash
-cd ~/master/modules   # the master's folder
-curl -L -O https://repo.rexlcloud.de/downloads/de/rexlcloud/restmodule/{version}/restmodule-{version}.jar
-```
-
-Restart the master, or load it without a restart:
+If you answered **yes** to "Install the RestModule?" in the [first-start setup](/docs/installation), it is already installed. Otherwise type this in the master console; it downloads the RestModule in the master's version and loads it right away:
 
 ```text
-modules load restmodule-{version}.jar
+modules install RestModule
+```
+
+`modules available` lists every official module and whether it is installed. You can also download the jar into the master's `modules/` folder yourself and load it with `modules load <file>`:
+
+```bash
+curl -L -o ~/master/modules/RestModule-{version}.jar https://repo.rexlcloud.de/downloads/de/rexlcloud/restmodule/{version}/restmodule-{version}.jar
 ```
 
 From now on the master keeps the RestModule up to date by itself, on every start. Official modules that are not installed are never added.

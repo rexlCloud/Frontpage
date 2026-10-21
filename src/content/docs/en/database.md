@@ -5,7 +5,7 @@ group: operate
 order: 3
 ---
 
-The master keeps players, their data and the network statistics in a database. It is configured in `config/database.json`.
+The master keeps players, their data and the network statistics in a database. The [first-start setup](/docs/installation) asks which one to use and sets it up in the console; afterwards it is configured in `config/database.json`.
 
 ## Embedded H2 (default)
 
@@ -52,7 +52,7 @@ Then `config/database.json`:
 }
 ```
 
-The master creates its tables on the next start. Back up MySQL with `mysqldump` or your host's backups; `database backup` only works for H2.
+For MariaDB you can write `"type": "mariadb"`; it works the same way. The master creates its tables on the next start. Back up MySQL with `mysqldump` or your host's backups; `database backup` only works for H2.
 
 ## Moving to another database
 
