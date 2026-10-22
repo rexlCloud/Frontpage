@@ -152,8 +152,9 @@ export const en = {
   },
   downloadPage: {
     title: 'Download',
-    text: 'All downloads come from repo.rexlcloud.de and always show the newest release.',
+    text: 'All downloads come from the GitHub releases of rexlCloud and always show the newest release; every jar has a SHA-256 checksum next to it.',
     version: 'Version',
+    allReleases: 'All releases on GitHub',
     files: [
       { key: 'launcher', name: 'Launcher', text: 'The only file you need: it installs and updates the master and wrappers. Start it with java -jar launcher.jar.', primary: true },
       { key: 'restmodule', name: 'RestModule', text: 'Optional. The REST API for the web panel: put it into the master\'s modules/ folder. The master keeps it up to date from then on.' },
@@ -168,7 +169,7 @@ export const en = {
       'Optional: MySQL or MariaDB instead of the embedded H2 database',
     ],
     developersTitle: 'For developers',
-    developersText: 'The APIs are Maven artifacts in the snapshots repository, with sources and Javadoc:',
+    developersText: 'The APIs are Maven artifacts on repo.rexlcloud.de/releases, with sources and Javadoc:',
   },
   apiPage: {
     title: 'API documentation',

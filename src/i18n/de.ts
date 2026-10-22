@@ -154,8 +154,9 @@ export const de: typeof en = {
   },
   downloadPage: {
     title: 'Download',
-    text: 'Alle Downloads kommen von repo.rexlcloud.de und zeigen immer die neueste Version.',
+    text: 'Alle Downloads kommen aus den GitHub-Releases von rexlCloud und zeigen immer die neueste Version; zu jeder Jar gibt es eine SHA-256-Prüfsumme.',
     version: 'Version',
+    allReleases: 'Alle Releases auf GitHub',
     files: [
       { key: 'launcher', name: 'Launcher', text: 'Die einzige Datei, die du brauchst: Sie installiert und aktualisiert Master und Wrapper. Starte sie mit java -jar launcher.jar.', primary: true },
       { key: 'restmodule', name: 'RestModule', text: 'Optional. Die REST-API für das Webpanel: in den Ordner modules/ des Masters legen. Ab dann hält der Master es aktuell.' },
@@ -170,7 +171,7 @@ export const de: typeof en = {
       'Optional: MySQL oder MariaDB statt der eingebauten H2-Datenbank',
     ],
     developersTitle: 'Für Entwickler',
-    developersText: 'Die APIs sind Maven-Artefakte im Snapshots-Repository, mit Sources und Javadoc:',
+    developersText: 'Die APIs sind Maven-Artefakte auf repo.rexlcloud.de/releases, mit Sources und Javadoc:',
   },
   apiPage: {
     title: 'API-Dokumentation',

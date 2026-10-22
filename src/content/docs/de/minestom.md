@@ -28,7 +28,7 @@ Füge sie deinem Minestom-Server hinzu, in derselben Version wie die Cloud:
 ```kotlin tab="Gradle (Kotlin)"
 repositories {
     mavenCentral()
-    maven("https://repo.rexlcloud.de/snapshots")
+    maven("https://repo.rexlcloud.de/releases")
 }
 
 dependencies {
@@ -40,7 +40,7 @@ dependencies {
 ```groovy tab="Gradle (Groovy)"
 repositories {
     mavenCentral()
-    maven { url = 'https://repo.rexlcloud.de/snapshots' }
+    maven { url = 'https://repo.rexlcloud.de/releases' }
 }
 
 dependencies {
@@ -53,7 +53,7 @@ dependencies {
 <repositories>
     <repository>
         <id>rexlcloud</id>
-        <url>https://repo.rexlcloud.de/snapshots</url>
+        <url>https://repo.rexlcloud.de/releases</url>
     </repository>
 </repositories>
 

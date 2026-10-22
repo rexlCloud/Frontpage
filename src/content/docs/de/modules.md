@@ -20,7 +20,7 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven("https://repo.rexlcloud.de/snapshots")
+    maven("https://repo.rexlcloud.de/releases")
 }
 
 dependencies {
@@ -39,7 +39,7 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven { url = 'https://repo.rexlcloud.de/snapshots' }
+    maven { url = 'https://repo.rexlcloud.de/releases' }
 }
 
 dependencies {
@@ -59,7 +59,7 @@ java {
 <repositories>
     <repository>
         <id>rexlcloud</id>
-        <url>https://repo.rexlcloud.de/snapshots</url>
+        <url>https://repo.rexlcloud.de/releases</url>
     </repository>
 </repositories>
 

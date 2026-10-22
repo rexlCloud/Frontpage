@@ -15,7 +15,7 @@ Komplette Plugins zum Loslegen: [Example-paper-plugin](https://github.com/rexlCl
 
 ```kotlin tab="Gradle (Kotlin)"
 repositories {
-    maven("https://repo.rexlcloud.de/snapshots")
+    maven("https://repo.rexlcloud.de/releases")
 }
 
 dependencies {
@@ -28,7 +28,7 @@ dependencies {
 
 ```groovy tab="Gradle (Groovy)"
 repositories {
-    maven { url = 'https://repo.rexlcloud.de/snapshots' }
+    maven { url = 'https://repo.rexlcloud.de/releases' }
 }
 
 dependencies {
@@ -43,7 +43,7 @@ dependencies {
 <repositories>
     <repository>
         <id>rexlcloud</id>
-        <url>https://repo.rexlcloud.de/snapshots</url>
+        <url>https://repo.rexlcloud.de/releases</url>
     </repository>
 </repositories>
 

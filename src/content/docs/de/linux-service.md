@@ -33,7 +33,7 @@ Die Wrapper finden Java-Installationen im Home-Ordner automatisch. So können Gr
 
 ```bash
 mkdir -p ~/master ~/wrapper
-curl -L -o ~/master/launcher.jar https://repo.rexlcloud.de/downloads/de/rexlcloud/launcher/{version}/launcher-{version}.jar
+curl -L -o ~/master/launcher.jar https://github.com/rexlCloud/rexlCloud/releases/latest/download/launcher.jar
 cp ~/master/launcher.jar ~/wrapper/launcher.jar
 ```
 

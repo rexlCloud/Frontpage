@@ -24,11 +24,13 @@ export const examples = [
 
 export type Artifact = 'launcher' | 'restmodule' | 'bridge' | 'proxy';
 
-/** The newest release, read from repo.rexlcloud.de when the site is built. */
+/** The newest release, read from GitHub (and the Javadoc from repo.rexlcloud.de) when the site is built. */
 export const release = cloud as {
   version: string;
   releasedAt: string | null;
   repository: string;
+  /** The GitHub releases page */
+  releases: string;
   jars: Record<Artifact, string>;
   apis: { artifact: string; version: string }[];
 };

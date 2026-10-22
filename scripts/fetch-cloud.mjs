@@ -1,8 +1,9 @@
-// Runs before every build: reads the newest rexlCloud release from the repository and unpacks the Javadoc of the
-// four APIs into public/api/<artifact>/. Writes src/generated/cloud.json, which the pages read.
+// Runs before every build: reads the newest rexlCloud release from GitHub (version, date, jar links) and unpacks the
+// Javadoc of the four APIs from Reposilite (repo.rexlcloud.de/releases) into public/api/<artifact>/. Writes
+// src/generated/cloud.json, which the pages read.
 //
-// FETCH_STRICT=1 (Docker build) fails when the repository cannot be reached; otherwise the last fetched data is kept
-// so the site can be developed offline.
+// FETCH_STRICT=1 (Docker build) fails when GitHub or Reposilite cannot be reached; otherwise the last fetched data is
+// kept so the site can be developed offline.
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,8 +11,8 @@ import { unzipSync } from 'fflate';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const REPO = 'https://repo.rexlcloud.de';
-const DOWNLOADS = `${REPO}/downloads/de/rexlcloud`;
-const SNAPSHOTS = `${REPO}/snapshots/de/rexlcloud`;
+const MAVEN = `${REPO}/releases/de/rexlcloud`;
+const GITHUB = 'https://github.com/rexlCloud/rexlCloud';
 const OUT = join(ROOT, 'src/generated/cloud.json');
 const STRICT = process.env.FETCH_STRICT === '1';
 
@@ -28,18 +29,43 @@ async function get(url, type = 'text') {
   return type === 'bytes' ? new Uint8Array(await response.arrayBuffer()) : response.text();
 }
 
-async function release(base, artifact) {
-  const xml = await get(`${base}/${artifact}/maven-metadata.xml`);
+async function apiVersion(artifact) {
+  const xml = await get(`${MAVEN}/${artifact}/maven-metadata.xml`);
   const version = xml.match(/<release>([^<]+)<\/release>/)?.[1] ?? xml.match(/<latest>([^<]+)<\/latest>/)?.[1];
-  const updated = xml.match(/<lastUpdated>(\d{14})<\/lastUpdated>/)?.[1];
   if (!version) {
     throw new Error(`No version in the metadata of ${artifact}`);
   }
-  return { version, updated };
+  return version;
+}
+
+/** GitHub answers releases/latest with a redirect to releases/tag/v<version>; no API quota needed. */
+async function latestRelease() {
+  const response = await fetch(`${GITHUB}/releases/latest`, { redirect: 'manual', signal: AbortSignal.timeout(30_000) });
+  const location = response.headers.get('location') ?? '';
+  const tag = location.split('/').pop();
+  if (!location.includes('/tag/') || !tag) {
+    throw new Error(`No release at ${GITHUB}/releases (HTTP ${response.status})`);
+  }
+  return tag.replace(/^v/, '');
+}
+
+/** The release date from the GitHub API; optional, it is only shown next to the version. */
+async function releaseDate(version) {
+  try {
+    const headers = process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {};
+    const response = await fetch(`https://api.github.com/repos/rexlCloud/rexlCloud/releases/tags/v${version}`,
+      { headers, signal: AbortSignal.timeout(30_000) });
+    if (!response.ok) {
+      return null;
+    }
+    return (await response.json()).published_at?.slice(0, 10) ?? null;
+  } catch {
+    return null;
+  }
 }
 
 async function unpackJavadoc(artifact, version) {
-  const jar = await get(`${SNAPSHOTS}/${artifact}/${version}/${artifact}-${version}-javadoc.jar`, 'bytes');
+  const jar = await get(`${MAVEN}/${artifact}/${version}/${artifact}-${version}-javadoc.jar`, 'bytes');
   const target = join(ROOT, 'public/api', artifact);
   await rm(target, { recursive: true, force: true });
   let files = 0;
@@ -56,20 +82,20 @@ async function unpackJavadoc(artifact, version) {
 }
 
 async function main() {
-  const { version, updated } = await release(DOWNLOADS, 'launcher');
-  const jars = Object.fromEntries(JARS.map((jar) => [jar, `${DOWNLOADS}/${jar}/${version}/${jar}-${version}.jar`]));
+  const version = await latestRelease();
+  const jars = Object.fromEntries(JARS.map((jar) => [jar, `${GITHUB}/releases/download/v${version}/${jar}.jar`]));
   const apis = [];
   for (const artifact of APIS) {
-    const api = await release(SNAPSHOTS, artifact);
-    const files = await unpackJavadoc(artifact, api.version);
-    apis.push({ artifact, version: api.version });
-    console.log(`Javadoc of ${artifact} ${api.version}: ${files} files`);
+    const apiRelease = await apiVersion(artifact);
+    const files = await unpackJavadoc(artifact, apiRelease);
+    apis.push({ artifact, version: apiRelease });
+    console.log(`Javadoc of ${artifact} ${apiRelease}: ${files} files`);
   }
-  const releasedAt = updated
-    ? `${updated.slice(0, 4)}-${updated.slice(4, 6)}-${updated.slice(6, 8)}`
-    : null;
+  const releasedAt = await releaseDate(version);
   await mkdir(dirname(OUT), { recursive: true });
-  await writeFile(OUT, JSON.stringify({ version, releasedAt, repository: REPO, jars, apis }, null, 2) + '\n');
+  await writeFile(OUT, JSON.stringify({
+    version, releasedAt, repository: `${REPO}/#/releases`, releases: `${GITHUB}/releases`, jars, apis,
+  }, null, 2) + '\n');
   console.log(`rexlCloud ${version}`);
 }
 
@@ -87,8 +113,8 @@ try {
     console.warn(`Could not fetch the cloud release (${error.message}); using placeholders`);
     await mkdir(dirname(OUT), { recursive: true });
     await writeFile(OUT, JSON.stringify({
-      version: '2.0.0', releasedAt: null, repository: REPO,
-      jars: Object.fromEntries(JARS.map((jar) => [jar, `${DOWNLOADS}/${jar}/`])), apis: [],
+      version: '1.0.0', releasedAt: null, repository: `${REPO}/#/releases`, releases: `${GITHUB}/releases`,
+      jars: Object.fromEntries(JARS.map((jar) => [jar, `${GITHUB}/releases/latest/download/${jar}.jar`])), apis: [],
     }, null, 2) + '\n');
   }
 }

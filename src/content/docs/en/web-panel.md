@@ -18,7 +18,7 @@ modules install RestModule
 `modules available` lists every official module and whether it is installed. You can also download the jar into the master's `modules/` folder yourself and load it with `modules load <file>`:
 
 ```bash
-curl -L -o ~/master/modules/RestModule-{version}.jar https://repo.rexlcloud.de/downloads/de/rexlcloud/restmodule/{version}/restmodule-{version}.jar
+curl -L -o ~/master/modules/RestModule-{version}.jar https://github.com/rexlCloud/rexlCloud/releases/download/v{version}/restmodule.jar
 ```
 
 From now on the master keeps the RestModule up to date by itself, on every start. Official modules that are not installed are never added.

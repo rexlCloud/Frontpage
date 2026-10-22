@@ -16,7 +16,7 @@ const page = dict.downloadPage;
 const version = release.version;
 
 const gradleKotlin = `repositories {
-    maven("https://repo.rexlcloud.de/snapshots")
+    maven("https://repo.rexlcloud.de/releases")
 }
 
 dependencies {
@@ -24,7 +24,7 @@ dependencies {
     compileOnly("de.rexlcloud:bukkit-api:${version}")
 }`;
 const gradleGroovy = `repositories {
-    maven { url = 'https://repo.rexlcloud.de/snapshots' }
+    maven { url = 'https://repo.rexlcloud.de/releases' }
 }
 
 dependencies {
@@ -34,7 +34,7 @@ dependencies {
 const maven = `<repositories>
     <repository>
         <id>rexlcloud</id>
-        <url>https://repo.rexlcloud.de/snapshots</url>
+        <url>https://repo.rexlcloud.de/releases</url>
     </repository>
 </repositories>
 
@@ -55,6 +55,9 @@ const maven = `<repositories>
       <span class="text-white">{version}</span>
       {release.releasedAt && <span class="text-slate-500">· {formatDate(release.releasedAt, lang)}</span>}
     </div>
+    <a href={release.releases} class="btn btn-glass btn-sm mt-6 ml-3" target="_blank" rel="noopener">
+      <Icon name="github" class="size-4" /> {page.allReleases}
+    </a>
   </PageHeader>
 
   <section class="mx-auto grid max-w-6xl gap-4 px-5 md:grid-cols-2">
@@ -64,7 +67,7 @@ const maven = `<repositories>
           <div class="icon-tile shrink-0"><Icon name={file.primary ? 'rocket' : 'jar'} class="size-5" /></div>
           <div class="min-w-0 flex-1">
             <h2 class="text-lg font-bold text-white">{file.name}</h2>
-            <p class="mt-1 font-mono text-xs text-slate-500">{file.key}-{version}.jar</p>
+            <p class="mt-1 font-mono text-xs text-slate-500">{file.key}.jar · v{version}</p>
             <p class="mt-3 text-slate-400">{file.text}</p>
           </div>
         </div>

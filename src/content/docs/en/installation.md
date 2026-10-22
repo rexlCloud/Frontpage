@@ -29,7 +29,7 @@ Create a folder for the master and one for the wrapper, and put the launcher int
 ```bash
 mkdir -p ~/rexlcloud/master ~/rexlcloud/wrapper
 cd ~/rexlcloud
-curl -L -o master/launcher.jar https://repo.rexlcloud.de/downloads/de/rexlcloud/launcher/{version}/launcher-{version}.jar
+curl -L -o master/launcher.jar https://github.com/rexlCloud/rexlCloud/releases/latest/download/launcher.jar
 cp master/launcher.jar wrapper/launcher.jar
 ```
 
