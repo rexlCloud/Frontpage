@@ -18,7 +18,7 @@ modules install RestModule
 `modules available` zeigt alle offiziellen Module und ob sie installiert sind. Du kannst die Jar auch selbst in den Ordner `modules/` des Masters laden und mit `modules load <datei>` laden:
 
 ```bash
-curl -L -o ~/master/modules/RestModule-{version}.jar https://github.com/rexlCloud/rexlCloud/releases/download/v{version}/restmodule.jar
+curl -L -o ~/master/modules/RestModule-{version}.jar https://github.com/rexlCloud/rexlCloud/releases/download/v{version}/restmodule-{version}.jar
 ```
 
 Ab jetzt hält der Master das RestModule bei jedem Start selbst aktuell. Offizielle Module, die nicht installiert sind, werden nie hinzugefügt.

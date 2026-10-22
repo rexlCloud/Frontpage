@@ -29,7 +29,7 @@ Lege einen Ordner für den Master und einen für den Wrapper an und kopiere den 
 ```bash
 mkdir -p ~/rexlcloud/master ~/rexlcloud/wrapper
 cd ~/rexlcloud
-curl -L -o master/launcher.jar https://github.com/rexlCloud/rexlCloud/releases/latest/download/launcher.jar
+curl -L -o master/launcher.jar https://github.com/rexlCloud/rexlCloud/releases/download/v{version}/launcher-{version}.jar
 cp master/launcher.jar wrapper/launcher.jar
 ```
 
