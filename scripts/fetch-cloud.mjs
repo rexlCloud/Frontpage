@@ -83,7 +83,7 @@ async function unpackJavadoc(artifact, version) {
 
 async function main() {
   const version = await latestRelease();
-  const jars = Object.fromEntries(JARS.map((jar) => [jar, `${GITHUB}/releases/download/v${version}/${jar}-${version}.jar`]));
+  const jars = Object.fromEntries(JARS.map((jar) => [jar, `${GITHUB}/releases/download/v${version}/${jar}.jar`]));
   const apis = [];
   for (const artifact of APIS) {
     const apiRelease = await apiVersion(artifact);
@@ -114,7 +114,7 @@ try {
     await mkdir(dirname(OUT), { recursive: true });
     await writeFile(OUT, JSON.stringify({
       version: '1.0.0', releasedAt: null, repository: `${REPO}/#/releases`, releases: `${GITHUB}/releases`,
-      jars: Object.fromEntries(JARS.map((jar) => [jar, `${GITHUB}/releases/latest`])), apis: [],
+      jars: Object.fromEntries(JARS.map((jar) => [jar, `${GITHUB}/releases/latest/download/${jar}.jar`])), apis: [],
     }, null, 2) + '\n');
   }
 }
