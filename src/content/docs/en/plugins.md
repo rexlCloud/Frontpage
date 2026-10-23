@@ -150,6 +150,26 @@ player.setData("coins", 250)
 val coins = player.getData<Int>("coins").orElse(0)
 ```
 
+The data stays when the player leaves. `getOfflinePlayer` reads and changes it whether the player is online or not, by UUID or by the name they last joined with; if they are online, the change reaches their `Player` on every server:
+
+```java tab="Java"
+// e.g. a reward for a player who is offline
+cloud.getOfflinePlayer("Notch").thenAccept(offline -> {
+    int coins = offline.<Integer>getData("coins").orElse(0);
+    offline.setData("coins", coins + 100);
+}).exceptionally(error -> null);  // PlayerNotFoundException: the player never joined the network
+```
+
+```kotlin tab="Kotlin"
+// e.g. a reward for a player who is offline
+cloud.getOfflinePlayer("Notch").thenAccept { offline ->
+    val coins = offline.getData<Int>("coins").orElse(0)
+    offline.setData("coins", coins + 100)
+}.exceptionally { null }  // PlayerNotFoundException: the player never joined the network
+```
+
+`offline.getLastLogin()`, `getFirstLogin()`, `isOnline()` and `getDataKeys()` tell you more about the player.
+
 ## Server states
 
 A minigame tells the others what it is doing; lobbies can show it on signs or in a menu:
